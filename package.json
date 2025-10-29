@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://IT4LOBRUNO.github.io/web_avancada4",
+  "homepage": "https://IT4LOBRUNO.github.io/web_avancada5",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
