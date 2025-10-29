@@ -1,0 +1,54 @@
+.aluno-perfil-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.aluno-perfil-header h1 {
+    font-size: 1.8em;
+    font-weight: 500;
+    color: #495057; 
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #dee2e6;
+    margin: 15px 0;
+}
+
+.perfil-section {
+    margin-top: 25px;
+    padding-bottom: 15px;
+}
+
+.perfil-section h2 {
+    font-size: 1.25em;
+    font-weight: 600;
+    color: #2572b6;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+}
+
+.perfil-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 10px 20px;
+}
+
+.perfil-grid p {
+    margin: 0;
+    padding: 3px 0;
+    font-size: 0.9em;
+    color: #343a40;
+}
+
+.perfil-grid strong {
+    color: #000000;
+    font-weight: 600;
+}
+
+
+.perfil-section > div[style*="flex"] {
+    margin-top: 10px;
+}

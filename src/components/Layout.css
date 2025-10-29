@@ -1,0 +1,240 @@
+.home-container {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF; 
+}
+
+/*Menu lateral*/
+.sidebar {
+    width: 250px;
+    background-color: #FFFFFF; 
+    color: #1A1D28;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 0; 
+    box-sizing: border-box;
+    border-right: 1px solid #E0E0E0; 
+}
+
+/*Cabeçalho do Menu*/
+.sidebar-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.sidebar-header img {
+    width: 80px; 
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+
+
+/* --- Títulos de Seção (MAIN MENU, OTHER) --- */
+.sidebar-main-menu,
+.sidebar-other {
+    color: #6C757D;
+    font-size: 10px; 
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 5px 20px 10px;
+}
+
+.sidebar-other {
+    padding-top: 20px;
+    border-top: 1px solid #E0E0E0;
+}
+
+/* --- Botões do Menu Principal --- */
+.menu-btn {
+    background: none;
+    font-weight: 500;
+    border: none;
+    color: #1A1D28;
+    text-align: left;
+    padding: 10px 20px;
+    margin: 5px 10px; 
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s, color 0.2s;
+}
+
+/* Estilo para o botão de menu ativo */
+.menu-btn.active {
+    background-color: #1B98F5;
+    color: #FFFFFF;
+    box-shadow: 0 4px 6px rgba(27, 152, 245, 0.2);
+}
+
+.menu-btn:hover {
+    background-color: #F0F0F0;
+    color: #1A1D28;
+}
+
+/* --- Botão Sair (Parte inferior) --- */
+.sidebar-bottom {
+    padding: 10px 0;
+}
+
+.menu-btn-sair {
+    background: none; 
+    border: none;
+    color: #1A1D28;
+    text-align: left;
+    padding: 10px 20px;
+    margin: 5px 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s;
+}
+
+.menu-btn-sair:hover {
+    background-color: #f7d4d4;
+    color: #D32F2F;
+}
+
+/* --- Área principal da página --- */
+.home-content {
+    flex: 1;
+    padding: 0; 
+    background-color: #F4F6F8; 
+    overflow-y: auto;
+}
+
+/* --- Cabeçalho Superior (Top Header) --- */
+.top-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px; 
+    background-color: #FFFFFF; 
+    height: 60px; 
+    border-bottom: 1px solid #E0E0E0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); 
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.header-left-section {
+    /* Ajuste: Não precisamos mais de gap, pois a barra de busca sumiu */
+    display: flex;
+    align-items: center;
+    /* gap: 30px; REMOVIDO */
+}
+
+.header-title {
+    font-size: 14px; 
+    color: #1A1D28; 
+    font-weight: bold;
+    /* Mantenha o título bem na esquerda */
+}
+
+/*
+.search-bar, .search-bar input
+Classes da barra de busca removidas
+*/
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-profile .notifications,
+.user-profile .messages {
+    color: #6C757D;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #1A1D28;
+    font-weight: 500;
+}
+
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #1B98F5; 
+}
+
+/* --- Estilos de Conteúdo da Página (Exemplo: Página de Alunos) --- */
+
+.alunos-page-container {
+    padding: 20px 30px; 
+    background-color: #F4F6F8; 
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #E0EEED;
+}
+
+.page-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-header h1 {
+    font-size: 24px;
+    color: #1A1D28;
+    margin: 0;
+}
+
+.filter-area {
+    padding: 20px;
+    margin-bottom: 25px;
+    background-color: #FFFFFF; 
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filter-title-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    color: #1A1D28;
+}
+
+.filter-area h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.alunos-table-area {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    overflow: hidden; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
