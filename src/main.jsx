@@ -5,7 +5,7 @@ import App from "./App.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter basename="/web_avancada4/">
+    <BrowserRouter basename="/web_avancada5/">
       <App />
     </BrowserRouter>
   </React.StrictMode>
