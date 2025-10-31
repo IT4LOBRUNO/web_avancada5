@@ -4,12 +4,12 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import Layout from "../components/Layout.jsx";
 import Button from "../components/Button.jsx";
-import { downloadBase64File } from "../components/DownloadHelper.jsx"; // Assumindo que este componente existe
-import { FiArrowLeft, FiDownload } from 'react-icons/fi'; // Ícones para melhor UX
-import "./AlunoPerfil.css"; // Estilos para organização (como sugerido anteriormente)
+import { downloadBase64File } from "../components/DownloadHelper.jsx";//Faz o download dos documentos
+import { FiArrowLeft, FiDownload } from 'react-icons/fi'; //Ícones
+import "./AlunoPerfil.css";
 
 
-// Função auxiliar para formatar datas (reutilizada)
+//Função de data tirada da internet
 const formatarData = (dataStr) => {
   if (!dataStr) return "—";
   const partes = dataStr.split("-");
@@ -50,8 +50,8 @@ export default function AlunoPerfil() {
 
   const handleDownload = (base64Data, filename) => {
     if (base64Data) {
-      // A função fileToBase64 no formulário cria um DataURL (ex: data:application/pdf;base64,...).
-      // A função downloadBase64File precisa lidar com esse formato.
+      //fileToBase64 no formulário cria um DataURL
+      //downloadBase64File precisa ser nesse formato.
       downloadBase64File(base64Data, filename);
     } else {
       alert("Arquivo não disponível ou corrompido.");
@@ -62,7 +62,6 @@ export default function AlunoPerfil() {
   if (erro) return <Layout><p style={{ color: 'red' }}>Erro: {erro}</p></Layout>;
   if (!aluno) return <Layout><p>Aluno não encontrado.</p></Layout>;
 
-  // Desestruturação de campos para acesso seguro e padronizado
   const { alunoData, documentos, habitacao, bens, arquivos } = aluno;
 
   return (
@@ -147,18 +146,18 @@ export default function AlunoPerfil() {
         <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
           {/*Certidão de Nascimento*/}
           <Button
-            onClick={() => handleDownload(arquivos?.certidaoNascimentoBase64, "Certidao_Nascimento.pdf")}
+            onClick={() => handleDownload(arquivos?.certidaoNascimentoBase64, "Comprovante_Residencia.pdf")}
             disabled={!arquivos?.certidaoNascimentoBase64}
           >
-            <FiDownload /> Baixar Certidão
+            <FiDownload /> Residencia
           </Button>
 
           {/*Comprovante de Residência*/}
           <Button
-            onClick={() => handleDownload(arquivos?.comprovanteResidenciaBase64, "Comprovante_Residencia.pdf")}
+            onClick={() => handleDownload(arquivos?.comprovanteResidenciaBase64, "Identidade.pdf")}
             disabled={!arquivos?.comprovanteResidenciaBase64}
           >
-            <FiDownload /> Baixar Comprovante
+            <FiDownload /> Identidade
           </Button>
         </div>
       </div>

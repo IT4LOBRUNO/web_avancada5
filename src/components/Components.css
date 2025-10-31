@@ -1,4 +1,3 @@
-/*Geral*/
 input,
 button,
 select {
@@ -7,14 +6,11 @@ select {
   box-sizing: border-box;
 }
 
-/* --- Cores e Estilos do Tema Claro --- */
+/*Ideia de tema claro e escuro(Incompleto)*/
 :root {
   --primary-color: #1B98F5;
-  /* Azul do botão ativo */
   --primary-hover: #167fc7;
-  /* Azul mais escuro no hover */
   --background-light: #F4F6F8;
-  /* Fundo principal do Layout */
   --text-dark: #1A1D28;
   --text-muted: #6C757D;
   --border-color: #E0E0E0;
@@ -25,7 +21,7 @@ select {
 }
 
 
-/* --- Campos de Input (InputField, SelectField, CheckboxField) --- */
+/*Input*/
 .input-field {
   margin-bottom: 15px;
   display: flex;
@@ -59,7 +55,7 @@ select {
 }
 
 
-/* --- Barra de busca (SearchBar.jsx) --- */
+/*SearchBar.jsx */
 .search-bar {
   width: 100%;
   padding: 10px 12px;
@@ -75,7 +71,7 @@ select {
   border-color: var(--primary-color);
 }
 
-/* --- Cards (AlunoCard, ResponsavelCard) --- */
+/*Cards(Abandonado por sugestão do professor no dia 22/10/2025)*/
 .card {
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -100,7 +96,7 @@ select {
   gap: 10px;
 }
 
-/* --- Botão (Button.jsx) --- */
+/*Button.jsx*/
 .app-button {
   background-color: var(--primary-color);
   color: #fff;
@@ -123,7 +119,7 @@ select {
   cursor: not-allowed;
 }
 
-/* --- Carregamento --- */
+/*Carregamento(Acabou não sendo necessário)*/
 .loading {
   text-align: center;
   padding: 20px;
@@ -131,7 +127,7 @@ select {
   font-style: italic;
 }
 
-/* --- Formulários (FormSection, FormHeader) --- */
+/*Formulários*/
 .form-section {
   padding: 30px;
   max-width: 600px;
@@ -152,7 +148,7 @@ select {
   color: #6C757D;
 }
 
-/* --- Estilos para SearchResultItem.jsx (Limpo) --- */
+/*SearchResultItem.jsx*/
 .search-result-item {
   display: flex;
   justify-content: space-between;
@@ -175,7 +171,7 @@ select {
   color: var(--text-dark);
 }
 
-/* --- Estilos para SearchTable.jsx (Limpo) --- */
+/*SearchTable.jsx*/
 .search-table-container {
   overflow-x: auto;
 }
@@ -212,6 +208,7 @@ select {
 .search-table-container td {
   padding: 10px 15px;
   color: #495057;
+  vertical-align: middle;
 }
 
 .search-table-container tbody tr:last-child {
@@ -224,13 +221,52 @@ select {
   font-style: italic;
 }
 
+.busca-header {
+  margin-bottom: 20px;
+}
+
+.busca-input-group {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.busca-input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border-color 0.2s;
+}
+
+.busca-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(27, 152, 245, 0.2);
+}
+
+.busca-error {
+  color: #E53E3E;
+  text-align: center;
+}
+
+.status-pre-matricula {
+  font-weight: 600;
+  color: #F39C12;
+}
+
+.status-matriculado {
+  font-weight: 600;
+  color: #27AE60;
+}
+
 /*Mensagens de Erro*/
 .validation-message {
-    color: #D32F2F;
-    font-size: 13px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center;
-    font-weight: 500;
+  color: #D32F2F;
+  font-size: 13px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
 }

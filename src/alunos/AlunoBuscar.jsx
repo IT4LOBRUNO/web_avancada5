@@ -6,6 +6,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig.js";
 import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading.jsx"; // Adiciona o componente Loading
+import "../components/Components.css"; // Importa o CSS para as novas classes
 
 export default function AlunoBuscar() {
   const [busca, setBusca] = useState("");
@@ -17,7 +18,7 @@ export default function AlunoBuscar() {
   useEffect(() => {
     const carregarAlunos = async () => {
       try {
-        // Busca todos os documentos na coleção "alunos"
+        // Busca todos os documentos na coleção "alunos" (Coleção correta)
         const snapshot = await getDocs(collection(db, "alunos"));
 
         const lista = snapshot.docs.map((doc) => ({
@@ -29,6 +30,7 @@ export default function AlunoBuscar() {
         setResultado(lista); // Exibe todos os alunos inicialmente
       } catch (error) {
         console.error("Erro ao carregar alunos:", error);
+        // Mantido o alerta conforme o código original
         alert("Erro ao buscar dados dos alunos.");
       } finally {
         setLoading(false);
@@ -40,7 +42,7 @@ export default function AlunoBuscar() {
   const handleBuscar = () => {
     const termo = busca.toLowerCase();
     if (termo.length < 3) {
-      // Se o termo de busca for muito curto, podemos exibir todos os alunos novamente ou pedir mais caracteres.
+      // Se o termo de busca for muito curto, exibimos todos os alunos.
       setResultado(alunos);
       return;
     }
@@ -48,7 +50,7 @@ export default function AlunoBuscar() {
     const filtrados = alunos.filter((a) =>
       // Busca pelo nome do aluno
       a.alunoData?.nome?.toLowerCase().includes(termo) ||
-      // Opcional: Busca pelo nome do responsável ou RG do aluno
+      // Busca pelo nome do responsável ou RG do aluno
       a.documentos?.responsavelNome?.toLowerCase().includes(termo) ||
       a.documentos?.rg?.includes(termo)
     );
@@ -70,42 +72,53 @@ export default function AlunoBuscar() {
     return dataStr;
   };
 
+  // Função para aplicar estilo condicional ao status
+  const getStatusElement = (status) => {
+    const statusValue = status || "—";
+    let className = "status-matriculado"; // Classe padrão para outros status (Verde)
+
+    if (statusValue === 'Pré-matrícula') {
+      className = 'status-pre-matricula'; // Classe para Pré-matrícula (Amarelo)
+    }
+
+    // Retorna um elemento React com a classe CSS
+    return <span className={className}>{statusValue}</span>;
+  };
+
+
   if (loading) {
     return <Layout><Loading text="Carregando alunos..." /></Layout>;
   }
 
   return (
     <Layout>
-      <h1 style={{ marginBottom: "20px" }}>Buscar Aluno</h1>
+      <h1 className="busca-header">Buscar Aluno</h1>
 
-      <div style={{ display: "flex", marginBottom: "20px", gap: "10px" }}>
+      <div className="busca-input-group">
         <input
           type="text"
+          className="busca-input"
           placeholder="Digite o nome do aluno ou responsável (Busca local)"
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
-          style={{
-            flex: 1,
-            padding: "10px",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
-          }}
         />
         <Button onClick={handleBuscar}>Buscar</Button>
       </div>
 
       {resultado.length === 0 && busca.length > 0 && (
-        <p style={{ color: '#E53E3E', textAlign: 'center' }}>Nenhum aluno encontrado para o termo "{busca}".</p>
+        <p className="busca-error">Nenhum aluno encontrado para o termo "{busca}".</p>
       )}
 
       <SearchTable
-        headers={["Nome do Aluno", "CPF", "Nascimento", "Responsável", "Ações"]}
+        headers={["Nome do Aluno", "CPF", "Nascimento", "Responsável", "Status", "Ações"]}
         rows={resultado.map((aluno) => ({
           id: aluno.id,
           nome: aluno.alunoData?.nome || "—",
           cpf: aluno.documentos?.cpf || "—",
           nascimento: formatarData(aluno.alunoData?.dataNascimento),
-          responsavel: aluno.documentos?.responsavelNome || "—", // CORREÇÃO AQUI
+          responsavel: aluno.documentos?.responsavelNome || "—",
+          status: getStatusElement(aluno.status), // 5ª Coluna: Valor do Status (Elemento React com classe)
+          actionPlaceholder: '',
         }))}
         onActionClick={(id) => handlePerfil(id)}
         actionLabel="Perfil"

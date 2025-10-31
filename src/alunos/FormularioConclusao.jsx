@@ -68,6 +68,7 @@ export default function FormularioConclusao() {
   const handleSave = async () => {
     if (!validate() || !alunoData) return;
     if (!userId) {
+      console.error("Sessão expirada ou usuário não autenticado.");
       alert("Sessão expirada ou usuário não autenticado. Por favor, faça login novamente.");
       setLoading(false);
       navigate("/");
@@ -90,6 +91,7 @@ export default function FormularioConclusao() {
         },
         createdBy: userId,
         createdAt: new Date(),
+        status: 'Pré-matrícula',
       };
 
       await addDoc(collection(db, "alunos"), alunoDoc);
@@ -101,8 +103,9 @@ export default function FormularioConclusao() {
 
       let errorMessage = "Ocorreu um erro ao salvar os dados. Verifique o console.";
 
-      if (error.message && error.message.includes("invalid nested entity")) {
-        errorMessage = "O documento é muito grande! Tente reenviar arquivos menores (PDFs ou imagens com menos de 700KB no total).";
+      //Limite do firestore de 1MB
+      if (error.message && error.message.includes("exceeds the maximum allowed") || error.message.includes("cannot be written because its size (1,530,505 bytes) ")) {
+        errorMessage = "O documento é muito grande! Tente reenviar arquivos menores (PDFs com menos de 700KB no total).";
       } else if (error.message && error.message.includes("Permission denied")) {
         errorMessage = "Permissão negada. Verifique as regras do Firestore.";
       }
@@ -123,7 +126,7 @@ export default function FormularioConclusao() {
 
         <h3>Envio de Documentos (Obrigatório)</h3>
 
-        {/* Certidão de Nascimento */}
+        {/*Certidão de Nascimento*/}
         <FileUploader
           label="Certidão de Nascimento *"
           accept=".pdf,image/*"
@@ -132,7 +135,7 @@ export default function FormularioConclusao() {
         />
         <ValidationMessage message={errors.certidaoNascimento} />
 
-        {/* Comprovante de Residência */}
+        {/*Comprovante de Residência*/}
         <FileUploader
           label="Comprovante de Residência *"
           accept=".pdf,image/*"
@@ -142,7 +145,7 @@ export default function FormularioConclusao() {
         <ValidationMessage message={errors.comprovanteResidencia} />
 
         <p style={{ marginTop: 20, fontStyle: 'italic', fontSize: '13px', color: '#6C757D' }}>
-          Os arquivos devem ser enviados no formato PDF ou imagem e **não podem exceder 1MB** no total para o documento.
+          Os arquivos devem ser enviados no formato PDF e não podem exceder 700KB no total para o documento.
         </p>
 
         <Button

@@ -33,9 +33,11 @@
     margin-bottom: 20px;
 }
 
+.sidebar-header div {
+    display: none; 
+}
 
-
-/* --- Títulos de Seção (MAIN MENU, OTHER) --- */
+/*MENU, OUTROS*/
 .sidebar-main-menu,
 .sidebar-other {
     color: #6C757D;
@@ -50,7 +52,7 @@
     border-top: 1px solid #E0E0E0;
 }
 
-/* --- Botões do Menu Principal --- */
+/*Botões do Menu Principal*/
 .menu-btn {
     background: none;
     font-weight: 500;
@@ -68,7 +70,7 @@
     transition: background 0.2s, color 0.2s;
 }
 
-/* Estilo para o botão de menu ativo */
+/*botão ativo*/
 .menu-btn.active {
     background-color: #1B98F5;
     color: #FFFFFF;
@@ -80,7 +82,7 @@
     color: #1A1D28;
 }
 
-/* --- Botão Sair (Parte inferior) --- */
+/*Botão Sair*/
 .sidebar-bottom {
     padding: 10px 0;
 }
@@ -106,7 +108,7 @@
     color: #D32F2F;
 }
 
-/* --- Área principal da página --- */
+/*Área principal da página*/
 .home-content {
     flex: 1;
     padding: 0; 
@@ -114,7 +116,7 @@
     overflow-y: auto;
 }
 
-/* --- Cabeçalho Superior (Top Header) --- */
+/*Cabeçalho*/
 .top-header {
     display: flex;
     align-items: center;
@@ -130,23 +132,15 @@
 }
 
 .header-left-section {
-    /* Ajuste: Não precisamos mais de gap, pois a barra de busca sumiu */
     display: flex;
     align-items: center;
-    /* gap: 30px; REMOVIDO */
 }
 
 .header-title {
     font-size: 14px; 
     color: #1A1D28; 
     font-weight: bold;
-    /* Mantenha o título bem na esquerda */
 }
-
-/*
-.search-bar, .search-bar input
-Classes da barra de busca removidas
-*/
 
 .user-profile {
     display: flex;
@@ -174,10 +168,10 @@ Classes da barra de busca removidas
     height: 35px;
     border-radius: 50%;
     object-fit: cover;
-    background-color: #1B98F5; 
+    background-color: #d5d7da; 
 }
 
-/* --- Estilos de Conteúdo da Página (Exemplo: Página de Alunos) --- */
+/*Conteúdo da Página*/
 
 .alunos-page-container {
     padding: 20px 30px; 
