@@ -3,11 +3,13 @@ import { auth, db } from "../firebase/firebaseConfig";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useInactivityTimer } from "./Inactivity";
+
 import "../components/Layout.css";
 import logo from "../assets/logo.png";
 import avatar from "../assets/avatar.png";
 
-// Ícones
+//Ícones
 import {
   FiUsers, FiFolder, FiBarChart, FiHelpCircle, FiLogOut, FiSettings, FiSearch, FiBell, FiMessageSquare, FiHome
 } from 'react-icons/fi';
@@ -19,11 +21,15 @@ export default function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
+  //Tempo de sessão
+  const { formattedCountdown, countdownSeconds, clearTimers } = useInactivityTimer(navigate, location);
+
   const isActive = (paths) => {
     const currentPath = location.pathname;
     return paths.some(path => currentPath === path);
   };
 
+  //Efeito de Autenticação
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -50,8 +56,8 @@ export default function Layout({ children }) {
     return () => unsubscribe();
   }, [navigate]);
 
-
   const handleLogout = async () => {
+    clearTimers();
     await signOut(auth);
     navigate("/");
   };
@@ -64,6 +70,14 @@ export default function Layout({ children }) {
         <div className="sidebar-header">
           <img src={logo} alt="Logo" />
         </div>
+
+        {/*Contador de Inatividade*/}
+        <div
+          className={`inactivity-timer ${countdownSeconds <= 300 ? 'warning' : ''}`}
+        >
+          <p>Sessão expira em: <strong>{formattedCountdown}</strong></p>
+        </div>
+        {/*Fim do Contador*/}
 
         <div className="sidebar-menu-section">
           <p className="sidebar-main-menu">MENU</p>
