@@ -1,27 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { auth, db } from "../firebase/firebaseConfig";
-import { signOut, onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import React from "react";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/firebaseConfig";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useInactivityTimer } from "./Inactivity";
+import { useUserRole } from "./role";
+import Loading from "./Loading";
 
 import "../components/Layout.css";
 import logo from "../assets/logo.png";
 import avatar from "../assets/avatar.png";
 
-//Ícones
-import {
-  FiUsers, FiFolder, FiBarChart, FiHelpCircle, FiLogOut, FiSettings, FiSearch, FiBell, FiMessageSquare, FiHome
-} from 'react-icons/fi';
-import { FaGraduationCap, FaUserTie, FaUserCog } from 'react-icons/fa';
+import { FiHelpCircle, FiLogOut, FiSettings, FiBell, FiMessageSquare, FiFolderPlus } from 'react-icons/fi';
+import { IoHomeOutline } from "react-icons/io5";
+import { LuUserSearch } from "react-icons/lu";
+import { LiaClipboardListSolid } from "react-icons/lia";
+import { HiOutlinePencilSquare } from "react-icons/hi2";
+import { BiBarChart } from "react-icons/bi";
+import { PiGraduationCap } from "react-icons/pi";
 
 export default function Layout({ children }) {
-  const [userName, setUserName] = useState("");
-  const [isLoadingUser, setIsLoadingUser] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
-  //Tempo de sessão
+  //Busca informações de Grupo
+  const {
+    userGroup,
+    isLoadingRole,
+    currentUserName: userName
+  } = useUserRole();
+
+  //Monitora o tempo de sessão
   const { formattedCountdown, countdownSeconds, clearTimers } = useInactivityTimer(navigate, location);
 
   const isActive = (paths) => {
@@ -29,40 +37,27 @@ export default function Layout({ children }) {
     return paths.some(path => currentPath === path);
   };
 
-  //Efeito de Autenticação
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          const userRef = doc(db, "usuarios", user.uid);
-          const userSnap = await getDoc(userRef);
-
-          if (userSnap.exists()) {
-            setUserName(userSnap.data().nome);
-          } else {
-            setUserName("Usuário sem perfil");
-          }
-        } catch (error) {
-          console.error("Erro ao buscar nome do usuário:", error);
-          setUserName("Erro ao carregar");
-        }
-      } else {
-        setUserName("Visitante");
-        navigate("/");
-      }
-      setIsLoadingUser(false);
-    });
-
-    return () => unsubscribe();
-  }, [navigate]);
-
+  // Logout manual
   const handleLogout = async () => {
     clearTimers();
     await signOut(auth);
     navigate("/");
   };
 
-  const displayUserName = isLoadingUser ? "Carregando..." : userName;
+  const displayUserName = isLoadingRole ? "Carregando..." : userName;
+
+  //Grupo 0:Alunos
+  const showNotas = userGroup === 0;
+
+  //Grupo 1:Colaboradores
+  const showCoordenacao = userGroup === 1 || userGroup === 2;
+
+  //Grupo 2:Coordenador/Diretor
+  const showMatriculas = userGroup === 2;
+
+  if (isLoadingRole) {
+    return <Loading />;
+  }
 
   return (
     <div className="home-container">
@@ -71,81 +66,91 @@ export default function Layout({ children }) {
           <img src={logo} alt="Logo" />
         </div>
 
-        {/*Contador de Inatividade*/}
-        <div
-          className={`inactivity-timer ${countdownSeconds <= 300 ? 'warning' : ''}`}
-        >
+        {/*Tempo de Inatividade*/}
+        <div className={`inactivity-timer ${countdownSeconds <= 300 ? 'warning' : ''}`}>
           <p>Sessão expira em: <strong>{formattedCountdown}</strong></p>
         </div>
-        {/*Fim do Contador*/}
 
         <div className="sidebar-menu-section">
           <p className="sidebar-main-menu">MENU</p>
 
+          {/*Botão sempre visivel*/}
           <button
             className={`menu-btn ${isActive(["/home", "/"]) ? "active" : ""}`}
             onClick={() => navigate("/home")}
           >
-            <FiHome size={20} />
+            <IoHomeOutline size={20} />
             Início
           </button>
 
-          <button
-            className={`menu-btn ${isActive(["/buscar-aluno", "/aluno-perfil"]) ? "active" : ""}`}
-            onClick={() => navigate("/buscar-aluno")}
-          >
-            <FiUsers size={20} />
-            Alunos
-          </button>
+          {/*Botões(Grupo 1 e Grupo 2*/}
+          {showCoordenacao && (
+            <>
+              <button
+                className={`menu-btn ${isActive(["/buscar-aluno", "/aluno-perfil"]) ? "active" : ""}`}
+                onClick={() => navigate("/buscar-aluno")}
+              >
+                <LuUserSearch size={20} />
+                Alunos
+              </button>
 
-          <button
-            className={`menu-btn ${isActive(["/cadastrar-aluno"]) ? "active" : ""}`}
-            onClick={() => navigate("/cadastrar-aluno")}
-          >
-            <FiFolder size={20} />
-            Cadastro
-          </button>
+              <button
+                className={`menu-btn ${isActive(["/cadastrar-aluno"]) ? "active" : ""}`}
+                onClick={() => navigate("/cadastrar-aluno")}
+              >
+                <FiFolderPlus size={20} />
+                Cadastro
+              </button>
 
-          <button
-            className={`menu-btn ${isActive(["/relatorios"]) ? "active" : ""}`}
-            onClick={() => navigate("/relatorios")}
-            disabled
-          >
-            <FiBarChart size={20} />
-            Relatórios
-          </button>
+              <button
+                className={`menu-btn ${isActive(["/relatorios"]) ? "active" : ""}`}
+                onClick={() => navigate("/relatorios")}
+                disabled
+              >
+                <BiBarChart size={20} />
+                Relatórios
+              </button>
 
-          <button
-            className={`menu-btn ${isActive(["/turmas"]) ? "active" : ""}`}
-            onClick={() => navigate("/turmas")}
-            disabled
-          >
-            <FaGraduationCap size={20} />
-            Turmas
-          </button>
+              <button
+                className={`menu-btn ${isActive(["/turmas"]) ? "active" : ""}`}
+                onClick={() => navigate("/turmas")}
+                disabled
+              >
+                <PiGraduationCap size={20} />
+                Turmas
+              </button>
+            </>
+          )}
 
-          <button
-            className={`menu-btn ${isActive(["/professores"]) ? "active" : ""}`}
-            onClick={() => navigate("/professores")}
-            disabled
-          >
-            <FaUserTie size={20} />
-            Professores
-          </button>
+          {/*Botão de Matrícula(Grupo 2)*/}
+          {showMatriculas && (
+            <button
+              className={`menu-btn ${isActive(["/coordenacao/matriculas"]) ? "active" : ""}`}
+              onClick={() => navigate("/coordenacao/matriculas")}
+            >
+              <LiaClipboardListSolid size={20} />
+              Matrículas
+            </button>
+          )}
 
-          <button
-            className={`menu-btn ${isActive(["/colaboradores"]) ? "active" : ""}`}
-            onClick={() => navigate("/colaboradores")}
-            disabled
-          >
-            <FaUserCog size={20} />
-            Colaboradores
-          </button>
+          {/*Botão de Notas(Grupo 0)*/}
+          {showNotas && (
+            <button
+              className={`menu-btn ${isActive(["/Notas"]) ? "active" : ""}`}
+              onClick={() => navigate("/Notas")}
+              disabled
+            >
+              <HiOutlinePencilSquare size={20} />
+              Notas
+            </button>
+          )}
+
         </div>
 
         <div className="sidebar-bottom">
           <p className="sidebar-other">OUTROS</p>
 
+          {/*Botões sempre visiveis*/}
           <button
             className={`menu-btn ${isActive(["/suporte"]) ? "active" : ""}`}
             onClick={() => navigate("/suporte")}
