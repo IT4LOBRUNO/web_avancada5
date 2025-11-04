@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "./Button.jsx";
-import "./Components.css"; // Importar CSS
+import "./Components.css";
 
 export default function SearchTable({
   headers = [],
@@ -8,7 +8,7 @@ export default function SearchTable({
   onActionClick,
   actionLabel = "Ação",
 }) {
-  // Se não houver dados, retorna a tabela vazia ou uma mensagem.
+  //Se não houver dados, retorna a tabela vazia
   if (rows.length === 0) {
     return (
       <div className="search-table-container">
@@ -30,7 +30,6 @@ export default function SearchTable({
     );
   }
 
-  // Obtém as chaves de dados do primeiro objeto (ignorando 'id' e 'actionPlaceholder')
   const dataKeys = Object.keys(rows[0]).filter(key => key !== 'id' && key !== 'actionPlaceholder');
 
   return (
@@ -38,7 +37,6 @@ export default function SearchTable({
       <table>
         <thead>
           <tr>
-            {/* Renderiza os cabeçalhos dinamicamente */}
             {headers.map((h, i) => (
               <th key={i}>{h}</th>
             ))}
@@ -46,13 +44,10 @@ export default function SearchTable({
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row.id}>
-              {/* Itera sobre as chaves de dados e renderiza as TDs */}
+            <tr key={row.id}>    
               {dataKeys.map(key => (
                 <td key={key} style={{ verticalAlign: 'middle' }}>{row[key]}</td>
-              ))}
-
-              {/* Coluna de Ações: Renderizada apenas se onActionClick for fornecido */}
+              ))}  
               {onActionClick && (
                 <td style={{ verticalAlign: 'middle' }}>
                   <Button onClick={() => onActionClick(row.id)}>

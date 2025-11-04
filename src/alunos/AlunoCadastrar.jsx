@@ -7,6 +7,8 @@ import Button from "../components/Button.jsx";
 import FormSection from "../components/FormSection.jsx";
 import FormHeader from "../components/FormHeader.jsx";
 import ValidationMessage from "../components/ValidationMessage.jsx";
+import validateBirthDate from "../components/ValidateData.jsx";
+
 import { auth } from "../firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -17,7 +19,7 @@ export default function AlunoCadastrar() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
-        navigate("/"); // Redireciona para login se não estiver logado
+        navigate("/")
       }
     });
 
@@ -34,12 +36,18 @@ export default function AlunoCadastrar() {
 
   const validate = () => {
     let newErrors = {};
+
     if (!alunoData.nome.trim()) newErrors.nome = "O nome completo é obrigatório.";
     if (!alunoData.genero) newErrors.genero = "O gênero é obrigatório.";
-    if (!alunoData.dataNascimento) newErrors.dataNascimento = "A data de nascimento é obrigatória.";
+
+    const birthDateError = validateBirthDate(alunoData.dataNascimento);
+    if (birthDateError) newErrors.dataNascimento = birthDateError;
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+
 
   const handleNext = () => {
     if (!validate()) return;

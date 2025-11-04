@@ -4,8 +4,8 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import Layout from "../components/Layout.jsx";
 import Button from "../components/Button.jsx";
-import { downloadBase64File } from "../components/DownloadHelper.jsx";//Faz o download dos documentos
-import { FiArrowLeft, FiDownload } from 'react-icons/fi'; //Ícones
+import { downloadBase64File } from "../components/DownloadHelper.jsx";
+import { FiArrowLeft, FiDownload } from 'react-icons/fi';
 import "./AlunoPerfil.css";
 
 
@@ -146,18 +146,18 @@ export default function AlunoPerfil() {
         <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
           {/*Certidão de Nascimento*/}
           <Button
-            onClick={() => handleDownload(arquivos?.certidaoNascimentoBase64, "Comprovante_Residencia.pdf")}
+            onClick={() => handleDownload(arquivos?.certidaoNascimentoBase64, "certidao.pdf")}
             disabled={!arquivos?.certidaoNascimentoBase64}
           >
-            <FiDownload /> Residencia
+            <FiDownload /> Certidao
           </Button>
 
           {/*Comprovante de Residência*/}
           <Button
-            onClick={() => handleDownload(arquivos?.comprovanteResidenciaBase64, "Identidade.pdf")}
+            onClick={() => handleDownload(arquivos?.comprovanteResidenciaBase64, "comprovante_residencia.pdf")}
             disabled={!arquivos?.comprovanteResidenciaBase64}
           >
-            <FiDownload /> Identidade
+            <FiDownload /> Residencia
           </Button>
         </div>
       </div>

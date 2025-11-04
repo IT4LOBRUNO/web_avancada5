@@ -14,6 +14,7 @@ import FormularioConclusao from "./alunos/FormularioConclusao.jsx";
 import AlunoPerfil from "./alunos/AlunoPerfil.jsx";
 import Matriculas from "./coordenacao/Matriculas.jsx";
 import Notas from "./alunos/Notas.jsx";
+import Analise from "./coordenacao/Analise.jsx";
 
 export default function App() {
   return (
@@ -37,9 +38,12 @@ export default function App() {
       {/*Matrículas*/}
       <Route path="/coordenacao/matriculas" element={<Matriculas />} />
 
-      {/*Responsáveis*/}
+      {/*Responsáveis Descontinuado*/}
       <Route path="/buscar-responsavel" element={<ResponsaveisBusca />} />
       <Route path="/cadastrar-responsavel" element={<ResponsaveisCriacao />} />
+
+      {/*Coordenação*/}
+      <Route path="/coordenacao/analise/:id" element={<Analise />} />
     </Routes>
   );
 }

@@ -138,7 +138,6 @@ export default function Layout({ children }) {
             <button
               className={`menu-btn ${isActive(["/Notas"]) ? "active" : ""}`}
               onClick={() => navigate("/Notas")}
-              disabled
             >
               <HiOutlinePencilSquare size={20} />
               Notas

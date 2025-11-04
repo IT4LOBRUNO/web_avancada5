@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiAlertCircle } from 'react-icons/fi';
-import './Components.css'; // Garantir que Components.css está carregado para estilos globais, se necessário.
+import './Components.css';
 
 export default function ValidationMessage({ message }) {
     if (!message) return null;

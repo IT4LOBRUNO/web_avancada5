@@ -1,3 +1,4 @@
+/* Cabeçalho da página de perfil */
 .aluno-perfil-header {
     display: flex;
     align-items: center;
@@ -8,15 +9,17 @@
 .aluno-perfil-header h1 {
     font-size: 1.8em;
     font-weight: 500;
-    color: #495057; 
+    color: #495057;
 }
 
+/* Linha divisória */
 hr {
     border: none;
     border-top: 1px solid #dee2e6;
     margin: 15px 0;
 }
 
+/* Seções */
 .perfil-section {
     margin-top: 25px;
     padding-bottom: 15px;
@@ -27,15 +30,18 @@ hr {
     font-weight: 600;
     color: #2572b6;
     margin-bottom: 15px;
+    border-bottom: 1px solid #dee2e6;
     padding-bottom: 5px;
 }
 
+/* Grid interno */
 .perfil-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 10px 20px;
 }
 
+/* Textos */
 .perfil-grid p {
     margin: 0;
     padding: 3px 0;
@@ -44,11 +50,14 @@ hr {
 }
 
 .perfil-grid strong {
-    color: #000000;
+    color: #000;
     font-weight: 600;
 }
 
-
-.perfil-section > div[style*="flex"] {
-    margin-top: 10px;
+/* Espaçamento para botões na seção final */
+.perfil-section .perfil-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    gap: 20px;
 }

@@ -1,0 +1,203 @@
+.alunos-page-container {
+    padding: 20px;
+    background-color: #f9fafb;
+    min-height: calc(100vh - 80px);
+}
+
+.page-header {
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.page-title-group h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/*Busca e Input*/
+.busca-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.busca-input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.busca-input:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.busca-error {
+    color: #ef4444;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+
+.filter-controls-container {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.filter-button-wrapper {
+    position: relative;
+    margin-right: 10px;
+}
+
+.filter-button {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s, color 0.2s;
+    margin-top: 1px;
+}
+
+.filter-button-inactive {
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+.filter-button-active {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.filter-dropdown {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    z-index: 100;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 10px;
+    width: 240px;
+}
+
+.filter-section-title {
+    font-weight: bold;
+    font-size: 12px;
+    color: #6b7280;
+    margin: 0 0 5px 0;
+}
+
+.filter-section {
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.filter-section-divider {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.filter-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #374151;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.filter-item:hover {
+    background-color: #f3f4f6;
+}
+
+.filter-item-active {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.filter-item-active:hover {
+    background-color: #2563eb;
+}
+
+/*Filtros Ativos*/
+.active-filters-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+    min-height: 20px;
+}
+
+.filter-tag {
+    background-color: #B9F0B9;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.filter-tag span {
+    font-weight: bold;
+}
+
+.filter-tag-remove-btn {
+    background-color: transparent;
+    border: none;
+    color: #1f2937;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1;
+    padding: 0;
+    margin-left: 5px;
+}
+
+/*Status da Matrícula*/
+.status-aprovado,
+.status-matriculado,
+.status-pre-matricula,
+.status-cancelado {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.status-aprovado {
+    background-color: #cdf7cd;
+    color: #078307;
+}
+
+.status-matriculado {
+    background-color: #aed4f7;
+    color: #083f74;
+}
+
+.status-pre-matricula {
+    background-color: #fdf5d3;
+    color: #a85719;
+}
+
+.status-cancelado {
+    background-color: #e5e7eb;
+    color: #4b5563;
+}
