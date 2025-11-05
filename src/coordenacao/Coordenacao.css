@@ -201,3 +201,18 @@
     background-color: #e5e7eb;
     color: #4b5563;
 }
+
+.idade-input {
+    padding: 10px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100px;
+}
+
+.idade-input:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
