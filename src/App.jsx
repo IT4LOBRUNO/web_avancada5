@@ -15,16 +15,20 @@ import AlunoPerfil from "./alunos/AlunoPerfil.jsx";
 import Matriculas from "./coordenacao/Matriculas.jsx";
 import Notas from "./alunos/Notas.jsx";
 import Analise from "./coordenacao/Analise.jsx";
+import Turmas from "./coordenacao/Turmas.jsx";
+import CriarTurma from "./coordenacao/CriarTurma.jsx";
+import AdicionarAluno from "./coordenacao/AdicionarAluno.jsx";
+
 
 export default function App() {
   return (
     <Routes>
-      {/*Autenticação*/}
+      {/* Autenticação */}
       <Route path="/" element={<Login />} />
       <Route path="/criar-conta" element={<CriarConta />} />
       <Route path="/home" element={<Home />} />
 
-      {/*Alunos*/}
+      {/* Alunos */}
       <Route path="/buscar-aluno" element={<AlunoBuscar />} />
       <Route path="/cadastrar-aluno" element={<AlunoCadastrar />} />
       <Route path="/cadastrar-aluno/:responsavelId" element={<AlunoFormulario />} />
@@ -34,15 +38,21 @@ export default function App() {
       <Route path="/aluno-perfil/:id" element={<AlunoPerfil />} />
       <Route path="/Notas" element={<Notas />} />
 
+      {/* Turmas */}
+      <Route path="/coordenacao/turmas" element={<Turmas />} />
+      <Route path="/coordenacao/criarTurma" element={<CriarTurma />} />
+      <Route path="/coordenacao/turmas/:id" element={<Turmas />} />
+      <Route path="/coordenacao/turmas/:id/adicionar-aluno" element={<AdicionarAluno />} />
 
-      {/*Matrículas*/}
+
+      {/* Matrículas */}
       <Route path="/coordenacao/matriculas" element={<Matriculas />} />
 
-      {/*Responsáveis Descontinuado*/}
+      {/* Responsáveis (Descontinuado) */}
       <Route path="/buscar-responsavel" element={<ResponsaveisBusca />} />
       <Route path="/cadastrar-responsavel" element={<ResponsaveisCriacao />} />
 
-      {/*Coordenação*/}
+      {/* Coordenação */}
       <Route path="/coordenacao/analise/:id" element={<Analise />} />
     </Routes>
   );

@@ -216,3 +216,97 @@
     outline: none;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  width: 420px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  animation: fadeIn .2s ease;
+}
+
+.modal-input {
+  padding: 9px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.item-turma {
+  background: #f9f9f9;
+  padding: 14px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  transition: 0.2s;
+  border: 1px solid #ddd;
+}
+
+.item-turma:hover {
+  background: #ececec;
+}
+
+.item-turma-nome {
+  font-weight: 600;
+}
+
+.item-turma-ano,
+.item-turma-turno {
+  color: #666;
+  margin-left: 8px;
+}
+
+.lista-turmas {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-turma {
+  padding: 14px 16px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #dcdcdc;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.item-turma:hover {
+  background: #f4f4f4;
+}
+
+.item-turma-nome {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.item-turma-info {
+  font-size: 13px;
+  color: #666;
+}
+

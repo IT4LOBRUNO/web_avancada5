@@ -7,9 +7,9 @@ const TIMEOUT_SECONDS = TIMEOUT_MINUTES * 60;
 const TIMEOUT_MS = TIMEOUT_SECONDS * 1000;
 
 /**
- * * @param {function} navigate
- * @param {object} location
- * @returns {{formattedCountdown: string, countdownSeconds: number, clearTimers: function}}
+@param {function} navigate
+@param {object} location
+@returns {{formattedCountdown: string, countdownSeconds: number, clearTimers: function}}
  */
 export function useInactivityTimer(navigate, location) {
     const [countdownSeconds, setCountdownSeconds] = useState(TIMEOUT_SECONDS);

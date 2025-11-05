@@ -112,13 +112,13 @@ export default function Layout({ children }) {
               </button>
 
               <button
-                className={`menu-btn ${isActive(["/turmas"]) ? "active" : ""}`}
-                onClick={() => navigate("/turmas")}
-                disabled
+                className={`menu-btn ${isActive(["/coordenacao/turmas"]) ? "active" : ""}`}
+                onClick={() => navigate("/coordenacao/turmas")}
               >
                 <PiGraduationCap size={20} />
                 Turmas
               </button>
+
             </>
           )}
 
