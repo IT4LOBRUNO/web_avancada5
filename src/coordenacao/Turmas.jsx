@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout.jsx";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading.jsx";
@@ -12,22 +12,24 @@ const TurmaCard = ({ turma, onClick, onAddAluno }) => {
   const membros = turma.membros || [];
   const totalMembros = turma.totalMembros || 0;
 
-  const getAvatarUrl = (membro) => {
-    if (membro.foto) return membro.foto;
-    const initials = membro.nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(membro.nome)}&background=3b82f6&color=ffffff&size=38`;
-  };
-
   return (
     <div className="turma-card">
       <div className="turma-card-header">
-        <h2 className="turma-card-title">{turma.nome || `Turma ${turma.id.substring(0, 4)}`}</h2>
-        <span className="ver-tudo" onClick={(e) => { e.stopPropagation(); onClick(turma.id); }}>Ver Tudo</span>
+        <h2 className="turma-card-title">
+          {turma.nome || `Turma ${turma.id.substring(0, 4)}`}
+        </h2>
+        <span
+          className="ver-tudo"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick(turma.id);
+          }}
+        >
+          Ver Tudo
+        </span>
       </div>
 
-      <div className="turma-card-members-info">
-        {totalMembros} Membros
-      </div>
+      <div className="turma-card-members-info">{totalMembros} Membros</div>
 
       <ul className="turma-card-members-list">
         {membros.slice(0, 5).map((membro, index) => (
@@ -36,31 +38,34 @@ const TurmaCard = ({ turma, onClick, onAddAluno }) => {
             className="turma-card-member-item"
             onClick={() => onClick(turma.id)}
           >
-            <div className="member-avatar-name-group">
-              <img
-                src={getAvatarUrl(membro)}
-                alt={membro.nome || "Aluno"}
-                className="member-avatar"
-              />
-              <span className="member-name">{membro.nome || "Aluno sem nome"}</span>
-            </div>
-            <span className="member-detail-arrow">&gt;</span>
+            <span className="member-name">{membro.nome}</span>
           </li>
         ))}
 
         {totalMembros === 0 && (
-          <li className="turma-card-member-item" style={{ justifyContent: 'center', color: '#6b7280', padding: '15px 0' }}>
+          <li
+            className="turma-card-member-item"
+            style={{
+              justifyContent: "center",
+              color: "#6b7280",
+              padding: "15px 0",
+            }}
+          >
             <span>Turma vazia</span>
           </li>
         )}
       </ul>
 
-      {/* ✅ Botão Adicionar Aluno */}
-      <div style={{ marginTop: "10px", textAlign: "center" }}>
+      <div style={{ marginTop: "10px", display: "flex", gap: "10px", justifyContent: "center" }}>
         <Button variant="azul" onClick={() => onAddAluno(turma.id)}>
           Adicionar Aluno
         </Button>
+
+        <Button variant="cinza" onClick={() => onClick(`editar:${turma.id}`)}>
+          Editar Turma
+        </Button>
       </div>
+
     </div>
   );
 };
@@ -76,10 +81,37 @@ export default function Turmas() {
     const fetchTurmas = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "turmas"));
-        const lista = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        let lista = [];
+
+        for (const docTurma of querySnapshot.docs) {
+          const turmaData = docTurma.data();
+          let membrosDetalhados = [];
+
+          if (Array.isArray(turmaData.membros)) {
+            for (const uid of turmaData.membros) {
+              const alunoRef = doc(db, "alunos", uid);
+              const alunoSnap = await getDoc(alunoRef);
+
+              if (alunoSnap.exists()) {
+                const alunoData = alunoSnap.data();
+                const nome = alunoData?.alunoData?.nome || "Aluno sem nome";
+
+                membrosDetalhados.push({
+                  id: uid,
+                  nome,
+                });
+              }
+            }
+          }
+
+          lista.push({
+            id: docTurma.id,
+            ...turmaData,
+            membros: membrosDetalhados,
+            totalMembros: membrosDetalhados.length,
+          });
+        }
+
         setTurmas(lista);
         setFilteredTurmas(lista);
       } catch (error) {
@@ -93,25 +125,28 @@ export default function Turmas() {
   }, []);
 
   const handleCriarTurma = () => navigate("/coordenacao/criarTurma");
-
   const handleAbrirTurma = (id) => navigate(`/coordenacao/turmas/${id}`);
-
-  const handleAddAluno = (id) => navigate(`/coordenacao/turmas/${id}/adicionar-aluno`);
+  const handleAddAluno = (id) =>
+    navigate(`/coordenacao/turmas/${id}/adicionar-aluno`);
 
   const handleBuscar = (texto) => {
     setBusca(texto);
     const termo = texto.toLowerCase();
     setFilteredTurmas(
-      turmas.filter(t => (t.nome || "").toLowerCase().includes(termo))
+      turmas.filter((t) => (t.nome || "").toLowerCase().includes(termo))
     );
   };
 
-  if (loading) return <Layout><Loading text="Carregando turmas..." /></Layout>;
+  if (loading)
+    return (
+      <Layout>
+        <Loading text="Carregando turmas..." />
+      </Layout>
+    );
 
   return (
     <Layout>
       <div className="alunos-page-container">
-
         <div className="page-header page-header-turmas">
           <div className="page-title-group">
             <h1>Gestão de Turmas</h1>
@@ -142,13 +177,20 @@ export default function Turmas() {
               <TurmaCard
                 key={turma.id}
                 turma={turma}
-                onClick={handleAbrirTurma}
+                onClick={(id) => {
+                  if (id.startsWith("editar:")) {
+                    const turmaId = id.replace("editar:", "");
+                    navigate(`/coordenacao/turmas/${turmaId}/editar`);
+                  } else {
+                    handleAbrirTurma(id);
+                  }
+                }}
                 onAddAluno={handleAddAluno}
               />
+
             ))}
           </div>
         )}
-
       </div>
     </Layout>
   );

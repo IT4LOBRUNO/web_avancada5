@@ -18,7 +18,7 @@ import Analise from "./coordenacao/Analise.jsx";
 import Turmas from "./coordenacao/Turmas.jsx";
 import CriarTurma from "./coordenacao/CriarTurma.jsx";
 import AdicionarAluno from "./coordenacao/AdicionarAluno.jsx";
-
+import EditarTurma from "./coordenacao/EditarTurma.jsx";
 
 export default function App() {
   return (
@@ -41,9 +41,9 @@ export default function App() {
       {/* Turmas */}
       <Route path="/coordenacao/turmas" element={<Turmas />} />
       <Route path="/coordenacao/criarTurma" element={<CriarTurma />} />
-      <Route path="/coordenacao/turmas/:id" element={<Turmas />} />
-      <Route path="/coordenacao/turmas/:id/adicionar-aluno" element={<AdicionarAluno />} />
-
+      <Route path="/coordenacao/turmas/:turmaId" element={<Turmas />} />
+      <Route path="/coordenacao/turmas/:turmaId/adicionar-aluno" element={<AdicionarAluno />} />
+      <Route path="/coordenacao/turmas/:turmaId/editar" element={<EditarTurma />} /> {/* ✅ NOVA ROTA */}
 
       {/* Matrículas */}
       <Route path="/coordenacao/matriculas" element={<Matriculas />} />

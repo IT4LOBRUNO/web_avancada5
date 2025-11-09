@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../components/Layout.jsx";
-// import Button from "../components/Button.jsx"; // Removido para usar o elemento nativo
 import SearchTable from "../components/SearchTable.jsx";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig.js";
@@ -8,14 +7,12 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading.jsx";
 import { FiFilter } from "react-icons/fi";
 import "../coordenacao/Coordenacao.css";
-// NOTE: Alert foi removido conforme as regras do ambiente.
 
 export default function AlunoBuscar() {
   const [busca, setBusca] = useState("");
   const [alunos, setAlunos] = useState([]);
   const [resultado, setResultado] = useState([]);
   const [loading, setLoading] = useState(true);
-  // Adição dos estados de filtro
   const [filters, setFilters] = useState({
     idade: "",
     status: null,
@@ -24,7 +21,6 @@ export default function AlunoBuscar() {
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const navigate = useNavigate();
 
-  // Função para calcular a idade (copiada de Matriculas.jsx)
   const calcularIdade = (dataNascimentoStr) => {
     if (!dataNascimentoStr) return 0;
     const partes = dataNascimentoStr.split("-");
@@ -44,12 +40,11 @@ export default function AlunoBuscar() {
     return idade > 0 ? idade : 0;
   };
 
-  // Lógica de filtragem unificada (adaptada para os campos de AlunoBuscar)
   const applyFilters = useCallback(() => {
     let list = [...alunos];
     const termo = busca.toLowerCase();
 
-    // 1. Filtro de busca de texto (Nome do Aluno, Responsável, RG/CPF)
+    //Filtro de busca de texto (Nome do Aluno, Responsável, RG/CPF)
     if (termo.length >= 3) {
       list = list.filter(a =>
         a.alunoData?.nome?.toLowerCase().includes(termo) ||
@@ -58,22 +53,21 @@ export default function AlunoBuscar() {
         a.documentos?.cpf?.includes(termo)
       );
     } else if (termo.length > 0 && termo.length < 3) {
-      // Não filtra se a busca for menor que 3, mas deixa os outros filtros agirem
     }
 
-    // 2. Filtro de Status
+    //Filtro de Status
     if (filters.status) {
       list = list.filter(a => a.status === filters.status);
     }
 
-    // 3. Filtro de Cor/Raça
+    //Filtro de Cor/Raça
     if (filters.corRaca) {
       list = list.filter(a =>
         a.documentos?.corRaca?.toLowerCase() === filters.corRaca.toLowerCase()
       );
     }
 
-    // 4. Filtro de idade exata
+    //Filtro de idade exata
     if (filters.idade) {
       const idadeFiltrada = Number(filters.idade);
       if (!isNaN(idadeFiltrada)) {
@@ -106,17 +100,17 @@ export default function AlunoBuscar() {
     carregarAlunos();
   }, []);
 
-  // Dispara a filtragem sempre que filtros, busca ou a lista de alunos mudar
+  //Filtra sempre que houver alteração
   useEffect(() => {
     if (!loading) {
       applyFilters();
     } else {
-      // Se a busca estiver vazia e os filtros também, mostrar a lista completa ao carregar
+      //Se não houver nada nos filtros retorna tudo
       setResultado(alunos);
     }
   }, [filters, alunos, busca, loading, applyFilters]);
 
-  // Função para abrir/fechar e mudar filtros
+  //Método que abre, fecha e muda o filtro
   const handleFilterChange = (type, value) => {
     setFilters(prevFilters => ({
       ...prevFilters,
@@ -127,11 +121,10 @@ export default function AlunoBuscar() {
 
   const removeFilter = (key) => setFilters(prev => ({ ...prev, [key]: null }));
 
-  // Componente Dropdown de Filtros
+  //Dropdown
   const FilterDropdown = () => {
-    // Usando "Indigena" para padronizar com o código de Matriculas.jsx fornecido
     const corRacaOptions = ["Branca", "Preta", "Parda", "Indigena"];
-    const statusOptions = ["Pré-matrícula", "Aprovado", "Cancelado", "Matriculado"];
+    const statusOptions = ["Pré-matrícula", "Aprovado", "Cancelado", "Matriculado", "Rematricula"];
 
     const FilterItem = ({ label, type, value }) => {
       const isActive = filters[type] === value;
@@ -178,20 +171,23 @@ export default function AlunoBuscar() {
     const statusValue = status || "—";
     let className = "";
 
-    const normalized = statusValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const normalized = statusValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
-    if (normalized.toLowerCase() === "pré-matricula" || normalized.toLowerCase() === "pre-matricula") {
-      className = 'status-pre-matricula';
-    } else if (normalized.toLowerCase() === "cancelado") {
-      className = 'status-cancelado';
-    } else if (normalized.toLowerCase() === "aprovado") {
-      className = 'status-aprovado';
-    } else if (normalized.toLowerCase() === "matriculado") {
-      className = 'status-matriculado';
+    if (normalized === "pré-matricula" || normalized === "pre-matricula") {
+      className = "status-pre-matricula";
+    } else if (normalized === "cancelado") {
+      className = "status-cancelado";
+    } else if (normalized === "aprovado") {
+      className = "status-aprovado";
+    } else if (normalized === "matriculado") {
+      className = "status-matriculado";
+    } else if (normalized === "rematricula") {
+      className = "status-rematricula";
     }
 
     return <span className={className}>{statusValue}</span>;
   };
+
 
 
   if (loading) {

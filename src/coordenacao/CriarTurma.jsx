@@ -3,7 +3,7 @@ import Layout from "../components/Layout.jsx";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button.jsx"; 
+import Button from "../components/Button.jsx";
 import "./Coordenacao.css";
 
 export default function CriarTurma() {
@@ -20,15 +20,16 @@ export default function CriarTurma() {
 
     setLoading(true);
     try {
-      await addDoc(collection(db, "turmas"), {
+      const docRef = await addDoc(collection(db, "turmas"), {
         nome,
         turno,
         membros: [],
         totalMembros: 0,
       });
 
-      alert("Turma criada com sucesso!");
-      navigate("/coordenacao/turmas");
+      // Navega para a tela de adicionar aluno já com o turmaId
+      navigate(`/coordenacao/adicionar-aluno?turmaId=${docRef.id}`);
+
     } catch (error) {
       console.error("Erro ao criar turma:", error);
       alert("Erro ao criar turma, tente novamente.");
@@ -36,6 +37,7 @@ export default function CriarTurma() {
       setLoading(false);
     }
   };
+
 
   return (
     <Layout>

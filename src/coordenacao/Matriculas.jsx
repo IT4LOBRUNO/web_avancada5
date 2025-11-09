@@ -88,6 +88,8 @@ export default function Matriculas() {
     else if (normalized.toLowerCase() === "cancelado") className = 'status-cancelado';
     else if (normalized.toLowerCase() === "aprovado") className = 'status-aprovado';
     else if (normalized.toLowerCase() === "matriculado") className = 'status-matriculado';
+    else if (normalized.toLowerCase() === "rematricula") className = 'status-rematricula';
+
 
     return <span className={className}>{statusValue}</span>;
   };
@@ -105,7 +107,7 @@ export default function Matriculas() {
 
   const FilterDropdown = () => {
     const corRacaOptions = ["Branca", "Preta", "Parda", "Indigena"];
-    const statusOptions = ["Pré-matrícula", "Aprovado", "Cancelado", "Matriculado"];
+    const statusOptions = ["Pré-matrícula", "Aprovado", "Cancelado", "Matriculado", "Rematricula"];
 
     const FilterItem = ({ label, type, value }) => {
       const isActive = filters[type] === value;

@@ -169,39 +169,6 @@
     margin-left: 5px;
 }
 
-/*Status da Matrícula*/
-.status-aprovado,
-.status-matriculado,
-.status-pre-matricula,
-.status-cancelado {
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 600;
-    white-space: nowrap;
-    display: inline-block;
-}
-
-.status-aprovado {
-    background-color: #cdf7cd;
-    color: #078307;
-}
-
-.status-matriculado {
-    background-color: #aed4f7;
-    color: #083f74;
-}
-
-.status-pre-matricula {
-    background-color: #fdf5d3;
-    color: #a85719;
-}
-
-.status-cancelado {
-    background-color: #e5e7eb;
-    color: #4b5563;
-}
-
 .idade-input {
     padding: 10px 15px;
     border: 1px solid #d1d5db;
@@ -310,3 +277,97 @@
   color: #666;
 }
 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-content {
+  background: white;
+  padding: 24px 30px;
+  border-radius: 12px;
+  width: 380px;
+  max-width: 92%;
+  box-shadow: 0px 6px 22px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.22s ease-out;
+}
+
+.modal-content h3 {
+  margin-bottom: 15px;
+  text-align: center;
+  color: #333;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  margin-bottom: 18px;
+  font-size: 16px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-buttons button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.modal-buttons .salvar {
+  background: #007bff;
+  color: white;
+}
+
+@keyframes fadeIn {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-buttons .cancelar,
+.modal-buttons .remover {
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+  flex: 1;
+  margin: 0 5px;
+  font-size: 15px;
+}
+
+.modal-buttons .cancelar {
+  background: #e5e5e5;
+  color: #333;
+  transition: 0.2s;
+}
+
+.modal-buttons .cancelar:hover {
+  background: #d4d4d4;
+}
+
+.modal-buttons .remover {
+  background: #ef4444;
+  color: white;
+  transition: 0.2s;
+}
+
+.modal-buttons .remover:hover {
+  background: #dc2626;
+}

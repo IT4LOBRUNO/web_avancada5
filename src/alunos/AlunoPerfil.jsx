@@ -141,7 +141,7 @@ export default function AlunoPerfil() {
       <div className="perfil-section">
         <h2>Documentos Anexados</h2>
         <p style={{ marginBottom: 15, fontSize: '0.9em', color: '#6c757d' }}>
-          Clique para baixar os arquivos salvos em formato Base64.
+          Clique para baixar os arquivos.
         </p>
         <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
           {/*Certidão de Nascimento*/}

@@ -19,10 +19,14 @@ hr {
     margin: 15px 0;
 }
 
-/* Seções */
+/*Seções*/
 .perfil-section {
-    margin-top: 25px;
-    padding-bottom: 15px;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 12px;
+    border: 1px solid #dce3ea;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    margin-top: 5px;
 }
 
 .perfil-section h2 {
@@ -34,18 +38,20 @@ hr {
     padding-bottom: 5px;
 }
 
-/* Grid interno */
+/*Grid interno*/
 .perfil-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 10px 20px;
+    grid-template-columns: repeat(auto-fit, minmax(auto, 260px));
+    gap: 14px 0px;
+    justify-items: start;
 }
 
 /* Textos */
 .perfil-grid p {
     margin: 0;
     padding: 3px 0;
-    font-size: 0.9em;
+    font-size: 0.95em;
+    text-align: left;
     color: #343a40;
 }
 

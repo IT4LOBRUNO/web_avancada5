@@ -250,15 +250,57 @@ select {
   text-align: center;
 }
 
-.status-pre-matricula {
+/* ----------------------------- STATUS DA MATRÍCULA ----------------------------- */
+.status-aprovado,
+.status-matriculado,
+.status-pre-matricula,
+.status-rematricula,
+.status-cancelado {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
   font-weight: 600;
-  color: #F39C12;
+  display: inline-block;
+  white-space: nowrap;
+  border: 1px solid transparent;
 }
 
+/*matricula*/
 .status-matriculado {
-  font-weight: 600;
-  color: #27AE60;
+  background-color: #e1ecff;
+  color: #245bb0;
+  border-color: #9bb7e8;
 }
+
+/*pre-matricula*/
+.status-pre-matricula {
+  background-color: #fff4d6;
+  color: #b37f00;
+  border-color: #f3d48a;
+}
+
+/*rematricula*/
+.status-rematricula {
+  background-color: #ffe8cc;
+  color: #a85d00;
+  border-color: #f0bb7a;
+}
+
+/*aprovado*/
+.status-aprovado {
+  background-color: #d8f5e3;
+  color: #227a42;
+  border-color: #8ad3a2;
+}
+
+/*cancelado*/
+.status-cancelado {
+  background-color: #ffe0e0;
+  color: #a83232;
+  border-color: #e29b9b;
+}
+
+
 
 /*Mensagens de Erro*/
 .validation-message {
@@ -286,5 +328,44 @@ select {
   color: #1A1D28;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tabela-padrao {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  margin-top: 10px;
+}
+
+.tabela-padrao thead {
+  background: #f3f4f6;
+  text-align: left;
+}
+
+.tabela-padrao th {
+  padding: 12px 14px;
+  font-weight: 600;
+  color: #374151;
+  font-size: 15px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tabela-padrao td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.tabela-padrao tr:hover {
+  background-color: #f9fafb;
+}
+
+.tabela-padrao td button.app-button {
+  padding: 6px 14px;
+  font-size: 14px;
 }

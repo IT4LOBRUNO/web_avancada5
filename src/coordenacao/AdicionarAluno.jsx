@@ -1,101 +1,143 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout.jsx";
-import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
-import { useParams, useNavigate } from "react-router-dom";
+import { collection, getDocs, doc, updateDoc, arrayUnion, increment } from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig.js";
+import { useSearchParams } from "react-router-dom";
 import Loading from "../components/Loading.jsx";
+import "../coordenacao/coordenacao.css";
 import Button from "../components/Button.jsx";
-import "./Coordenacao.css";
+import { useParams } from "react-router-dom";
+
 
 export default function AdicionarAluno() {
-    const { id } = useParams(); // ID da turma
-    const navigate = useNavigate();
     const [alunos, setAlunos] = useState([]);
-    const [turma, setTurma] = useState(null);
+    const [busca, setBusca] = useState("");
     const [loading, setLoading] = useState(true);
+    const { turmaId } = useParams();
+
 
     useEffect(() => {
-        const carregarDados = async () => {
+        const carregarAlunos = async () => {
             try {
-                const alunosSnapshot = await getDocs(collection(db, "alunos"));
-                const listaAlunos = alunosSnapshot.docs
-                    .map((doc) => ({
-                        id: doc.id,
-                        ...doc.data(),
-                    }))
-                    .filter((aluno) => aluno.alunoData?.status === "Aprovado")
-                    .map((aluno) => ({
-                        id: aluno.id,
-                        nome: aluno.alunoData?.nome || "Aluno sem nome",
-                        foto: aluno.alunoData?.foto || null,
-                        status: aluno.alunoData?.status,
-                    }));
+                const snapshot = await getDocs(collection(db, "alunos"));
+                const lista = snapshot.docs
+                    .map((doc) => ({ id: doc.id, ...doc.data() }))
+                    .filter((aluno) => {
+                        const s = (aluno.status || "")
+                            .normalize("NFD")
+                            .replace(/[\u0300-\u036f]/g, "")
+                            .toLowerCase();
 
-                setAlunos(listaAlunos);
+                        return s === "aprovado" || s === "rematricula";
+                    });
 
 
-                const turmaSnap = await getDocs(collection(db, "turmas"));
-                const turmaData = turmaSnap.docs
-                    .map((d) => ({ id: d.id, ...d.data() }))
-                    .find((t) => t.id === id);
-
-                setTurma(turmaData || null);
-            } catch (error) {
-                console.error("Erro ao carregar dados:", error);
+                setAlunos(lista);
             } finally {
                 setLoading(false);
             }
         };
 
-        carregarDados();
-    }, [id]);
+        carregarAlunos();
+    }, []);
 
-    const adicionarAlunoNaTurma = async (aluno) => {
-        try {
-            const turmaRef = doc(db, "turmas", id);
+    const alunosFiltrados = alunos.filter((a) =>
+        (a.alunoData?.nome || "").toLowerCase().includes(busca.toLowerCase())
+    );
 
-            await updateDoc(turmaRef, {
-                membros: [...(turma.membros || []), aluno],
-                totalMembros: (turma.totalMembros || 0) + 1,
-            });
+    const adicionarAlunoNaTurma = async (alunoId) => {
+        if (!turmaId) return;
 
-            alert(`✅ Aluno ${aluno.nome} foi adicionado à turma!`);
-            navigate(`/coordenacao/turmas`);
-        } catch (error) {
-            console.error("Erro ao adicionar aluno:", error);
-            alert("❌ Erro ao adicionar aluno.");
-        }
+        const turmaRef = doc(db, "turmas", turmaId);
+        const alunoRef = doc(db, "alunos", alunoId);
+
+        await updateDoc(turmaRef, {
+            membros: arrayUnion(alunoId),
+            totalMembros: increment(1)
+        });
+
+        await updateDoc(alunoRef, {
+            status: "Matriculado"
+        });
+
+        setAlunos((prev) => prev.filter((a) => a.id !== alunoId));
     };
 
-    if (loading) return <Layout><Loading text="Carregando alunos..." /></Layout>;
+
+    if (loading) {
+        return (
+            <Layout>
+                <Loading text="Carregando alunos aprovados..." />
+            </Layout>
+        );
+    }
+
+    const getStatusElement = (status) => {
+        const normalized = (status || "")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+
+        let className = "";
+        if (normalized === "aprovado") className = "status-aprovado";
+        else if (normalized === "matriculado") className = "status-matriculado";
+        else if (normalized === "pre-matricula" || normalized === "pré-matricula")
+            className = "status-pre-matricula";
+        else if (normalized === "rematricula")
+            className = "status-rematricula";
+        else if (normalized === "cancelado")
+            className = "status-cancelado";
+
+
+        return <span className={className}>{status || "—"}</span>;
+    };
 
     return (
         <Layout>
             <div className="alunos-page-container">
                 <div className="page-header">
-                    <h1>Adicionar Aluno à Turma</h1>
-                    <Button variant="cinza" onClick={() => navigate(-1)}>
-                        Voltar
-                    </Button>
+                    <div className="page-title-group">
+                        <h1>Adicionar Aluno à Turma</h1>
+                    </div>
                 </div>
 
-                {alunos.length === 0 ? (
-                    <p style={{ textAlign: "center", color: "#555" }}>
-                        Nenhum aluno encontrado.
-                    </p>
+                <div className="busca-input-group" style={{ marginBottom: "15px" }}>
+                    <input
+                        type="text"
+                        className="busca-input"
+                        placeholder="Buscar aluno pelo nome..."
+                        value={busca}
+                        onChange={(e) => setBusca(e.target.value)}
+                    />
+                </div>
+
+                {alunosFiltrados.length === 0 ? (
+                    <p className="busca-error">Nenhum aluno aprovado encontrado.</p>
                 ) : (
-                    <ul className="turma-card-members-list">
-                        {alunos.map((aluno) => (
-                            <li
-                                key={aluno.id}
-                                className="turma-card-member-item"
-                                onClick={() => adicionarAlunoNaTurma(aluno)}
-                            >
-                                <span>{aluno.nome}</span>
-                                <span className="member-detail-arrow">+</span>
-                            </li>
-                        ))}
-                    </ul>
+                    <table className="tabela-padrao">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Responsável</th>
+                                <th>Status</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {alunosFiltrados.map((aluno) => (
+                                <tr key={aluno.id}>
+                                    <td>{aluno.alunoData?.nome || "—"}</td>
+                                    <td>{aluno.documentos?.responsavelNome || "—"}</td>
+                                    <td>{getStatusElement(aluno.status)}</td>
+                                    <td>
+                                        <Button onClick={() => adicionarAlunoNaTurma(aluno.id)}>
+                                            Adicionar
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 )}
             </div>
         </Layout>
