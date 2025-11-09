@@ -5,11 +5,10 @@ import { db } from "../firebase/firebaseConfig";
 import Layout from "../components/Layout.jsx";
 import Button from "../components/Button.jsx";
 import { downloadBase64File } from "../components/DownloadHelper.jsx";
+import { salvarFotoPerfil } from "../components/FotoPerfil.jsx";
 import { FiArrowLeft, FiDownload } from 'react-icons/fi';
 import "./AlunoPerfil.css";
 
-
-//Função de data tirada da internet
 const formatarData = (dataStr) => {
   if (!dataStr) return "—";
   const partes = dataStr.split("-");
@@ -50,24 +49,37 @@ export default function AlunoPerfil() {
 
   const handleDownload = (base64Data, filename) => {
     if (base64Data) {
-      //fileToBase64 no formulário cria um DataURL
-      //downloadBase64File precisa ser nesse formato.
       downloadBase64File(base64Data, filename);
     } else {
       alert("Arquivo não disponível ou corrompido.");
     }
-  }
+  };
+
+  const handleFotoPerfilChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      const base64 = await salvarFotoPerfil(id, file);
+      alert("Foto de perfil atualizada com sucesso!");
+      setAluno(prev => ({ ...prev, fotoPerfil: base64 }));
+    } catch (err) {
+      console.error("Erro ao atualizar foto de perfil:", err);
+      alert("Não foi possível atualizar a foto. Tente novamente.");
+    }
+  };
 
   if (carregando) return <Layout><p>Carregando perfil...</p></Layout>;
-  if (erro) return <Layout><p style={{ color: 'red' }}>Erro: {erro}</p></Layout>;
+  if (erro) return <Layout><p className="erro-mensagem">Erro: {erro}</p></Layout>;
   if (!aluno) return <Layout><p>Aluno não encontrado.</p></Layout>;
 
   const { alunoData, documentos, habitacao, bens, arquivos } = aluno;
 
   return (
     <Layout>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-        <Button onClick={() => navigate('/buscar-aluno')} style={{ marginRight: '15px' }}>
+      {/*Cabeçalho*/}
+      <div className="aluno-cabecalho">
+        <Button onClick={() => navigate('/buscar-aluno')}>
           <FiArrowLeft /> Voltar à Busca
         </Button>
         <h1>Perfil de {alunoData?.nome || 'Aluno Desconhecido'}</h1>
@@ -75,7 +87,38 @@ export default function AlunoPerfil() {
 
       <hr />
 
-      {/*Dados Pessoais do Aluno*/}
+      {/*Foto de Perfil*/}
+      <div className="foto-perfil-container">
+        <h2>Foto de Perfil</h2>
+        <div className="foto-perfil-inner">
+          {aluno?.fotoPerfil ? (
+            <img
+              src={aluno.fotoPerfil}
+              alt="Avatar do Aluno"
+              className="foto-perfil-img"
+            />
+          ) : (
+            <div className="foto-perfil-placeholder">
+              {aluno?.alunoData?.nome?.charAt(0) || '?'}
+            </div>
+          )}
+
+          <input
+            id="foto-perfil-input"
+            type="file"
+            accept="image/*"
+            onChange={handleFotoPerfilChange}
+            style={{ display: 'none' }}
+          />
+
+          <label htmlFor="foto-perfil-input" className="custom-file-button">
+            Alterar Foto
+          </label>
+        </div>
+      </div>
+
+
+      {/*Dados Pessoais*/}
       <div className="perfil-section">
         <h2>Dados Pessoais do Aluno</h2>
         <div className="perfil-grid">
@@ -86,7 +129,7 @@ export default function AlunoPerfil() {
         </div>
       </div>
 
-      {/*Documentos do Aluno e Filiação*/}
+      {/*Documentos e Filiação*/}
       <div className="perfil-section">
         <h2>Documentos e Filiação</h2>
         <div className="perfil-grid">
@@ -110,7 +153,7 @@ export default function AlunoPerfil() {
         </div>
       </div>
 
-      {/*Situação Socioeconômica (Habitação)*/}
+      {/*Habitação*/}
       <div className="perfil-section">
         <h2>Habitação e Saneamento</h2>
         <div className="perfil-grid">
@@ -124,7 +167,7 @@ export default function AlunoPerfil() {
         </div>
       </div>
 
-      {/*Bens (Socioeconômico)*/}
+      {/*Bens*/}
       <div className="perfil-section">
         <h2>Bens e Equipamentos</h2>
         <div className="perfil-grid">
@@ -136,15 +179,13 @@ export default function AlunoPerfil() {
         </div>
       </div>
 
-
-      {/*Documentos Anexados (Base64)*/}
+      {/*Documentos Anexados*/}
       <div className="perfil-section">
         <h2>Documentos Anexados</h2>
-        <p style={{ marginBottom: 15, fontSize: '0.9em', color: '#6c757d' }}>
+        <p className="documentos-info">
           Clique para baixar os arquivos.
         </p>
-        <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
-          {/*Certidão de Nascimento*/}
+        <div className="documentos-buttons">
           <Button
             onClick={() => handleDownload(arquivos?.certidaoNascimentoBase64, "certidao.pdf")}
             disabled={!arquivos?.certidaoNascimentoBase64}
@@ -152,7 +193,6 @@ export default function AlunoPerfil() {
             <FiDownload /> Certidao
           </Button>
 
-          {/*Comprovante de Residência*/}
           <Button
             onClick={() => handleDownload(arquivos?.comprovanteResidenciaBase64, "comprovante_residencia.pdf")}
             disabled={!arquivos?.comprovanteResidenciaBase64}

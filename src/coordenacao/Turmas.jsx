@@ -7,7 +7,6 @@ import Loading from "../components/Loading.jsx";
 import Button from "../components/Button.jsx";
 import "./Coordenacao.css";
 
-// Componente para o Card individual de cada Turma
 const TurmaCard = ({ turma, onClick, onAddAluno }) => {
   const membros = turma.membros || [];
   const totalMembros = turma.totalMembros || 0;
@@ -18,15 +17,6 @@ const TurmaCard = ({ turma, onClick, onAddAluno }) => {
         <h2 className="turma-card-title">
           {turma.nome || `Turma ${turma.id.substring(0, 4)}`}
         </h2>
-        <span
-          className="ver-tudo"
-          onClick={(e) => {
-            e.stopPropagation();
-            onClick(turma.id);
-          }}
-        >
-          Ver Tudo
-        </span>
       </div>
 
       <div className="turma-card-members-info">{totalMembros} Membros</div>
@@ -38,6 +28,17 @@ const TurmaCard = ({ turma, onClick, onAddAluno }) => {
             className="turma-card-member-item"
             onClick={() => onClick(turma.id)}
           >
+            {membro.fotoPerfil ? (
+              <img
+                src={membro.fotoPerfil}
+                alt={membro.nome}
+                className="member-avatar-img"
+              />
+            ) : (
+              <div className="member-avatar">
+                {membro.nome.charAt(0)}
+              </div>
+            )}
             <span className="member-name">{membro.nome}</span>
           </li>
         ))}
@@ -65,7 +66,6 @@ const TurmaCard = ({ turma, onClick, onAddAluno }) => {
           Editar Turma
         </Button>
       </div>
-
     </div>
   );
 };
@@ -95,10 +95,12 @@ export default function Turmas() {
               if (alunoSnap.exists()) {
                 const alunoData = alunoSnap.data();
                 const nome = alunoData?.alunoData?.nome || "Aluno sem nome";
+                const fotoPerfil = alunoData?.fotoPerfil || null;
 
                 membrosDetalhados.push({
                   id: uid,
                   nome,
+                  fotoPerfil
                 });
               }
             }
@@ -126,8 +128,7 @@ export default function Turmas() {
 
   const handleCriarTurma = () => navigate("/coordenacao/criarTurma");
   const handleAbrirTurma = (id) => navigate(`/coordenacao/turmas/${id}`);
-  const handleAddAluno = (id) =>
-    navigate(`/coordenacao/turmas/${id}/adicionar-aluno`);
+  const handleAddAluno = (id) => navigate(`/coordenacao/turmas/${id}/adicionar-aluno`);
 
   const handleBuscar = (texto) => {
     setBusca(texto);
@@ -187,7 +188,6 @@ export default function Turmas() {
                 }}
                 onAddAluno={handleAddAluno}
               />
-
             ))}
           </div>
         )}

@@ -203,9 +203,7 @@ export default function AlunoBuscar() {
           </div>
         </div>
 
-        {/* ESTRUTURA DE FILTRO PADRONIZADA COM MATRICULAS.JSX */}
         <div className="filter-controls-container">
-          {/* Botão de Filtro (1) - AGORA USANDO O ELEMENTO NATIVO <button> */}
           <div className="filter-button-wrapper">
             <button
               onClick={() => setShowFilterMenu(!showFilterMenu)}

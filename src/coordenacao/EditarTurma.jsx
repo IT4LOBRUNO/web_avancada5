@@ -58,10 +58,17 @@ export default function EditarTurma() {
     const salvarNomeTurma = async () => {
         if (!nomeTurma.trim()) return;
 
-        await updateDoc(doc(db, "turmas", turmaId), {
-            nome: nomeTurma.trim(),
-        });
+        try {
+            await updateDoc(doc(db, "turmas", turmaId), {
+                nome: nomeTurma.trim(),
+            });
+            alert("Nome da turma salvo com sucesso!");
+        } catch (error) {
+            console.error("Erro ao salvar o nome da turma:", error);
+            alert("Ocorreu um erro ao salvar o nome da turma.");
+        }
     };
+
 
     const removerAluno = async (alunoId) => {
         const turmaRef = doc(db, "turmas", turmaId);
@@ -172,7 +179,6 @@ export default function EditarTurma() {
                     </div>
                 </div>
             )}
-
 
         </Layout>
     );

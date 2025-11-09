@@ -22,22 +22,11 @@ export default function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  //Busca informações de Grupo
-  const {
-    userGroup,
-    isLoadingRole,
-    currentUserName: userName
-  } = useUserRole();
-
-  //Monitora o tempo de sessão
+  const { userGroup, isLoadingRole, currentUserName: userName } = useUserRole();
   const { formattedCountdown, countdownSeconds, clearTimers } = useInactivityTimer(navigate, location);
 
-  const isActive = (paths) => {
-    const currentPath = location.pathname;
-    return paths.some(path => currentPath === path);
-  };
+  const isActive = (paths) => paths.some(path => location.pathname === path);
 
-  // Logout manual
   const handleLogout = async () => {
     clearTimers();
     await signOut(auth);
@@ -46,18 +35,21 @@ export default function Layout({ children }) {
 
   const displayUserName = isLoadingRole ? "Carregando..." : userName;
 
-  //Grupo 0:Alunos
-  const showNotas = userGroup === 0;
+  // Botões principais do menu
+  const menuButtons = [
+    { label: "Início", icon: <IoHomeOutline size={20} />, path: "/home", groups: [0, 1, 2] },
+    { label: "Alunos", icon: <LuUserSearch size={20} />, path: "/buscar-aluno", groups: [1, 2] },
+    { label: "Cadastro", icon: <FiFolderPlus size={20} />, path: "/cadastrar-aluno", groups: [1, 2] },
+    { label: "Relatórios", icon: <BiBarChart size={20} />, path: "/relatorios", groups: [1, 2], disabled: true },
+    { label: "Turmas", icon: <PiGraduationCap size={20} />, path: "/coordenacao/turmas", groups: [1, 2] },
+    { label: "Matrículas", icon: <LiaClipboardListSolid size={20} />, path: "/coordenacao/matriculas", groups: [2] },
+    { label: "Notas", icon: <HiOutlinePencilSquare size={20} />, path: "/Notas", groups: [0] },
+  ];
 
-  //Grupo 1:Colaboradores
-  const showCoordenacao = userGroup === 1 || userGroup === 2;
-
-  //Grupo 2:Coordenador/Diretor
-  const showMatriculas = userGroup === 2;
-
-  if (isLoadingRole) {
-    return <Loading />;
-  }
+  const otherButtons = [
+    { label: "Suporte", icon: <FiHelpCircle size={20} />, path: "/suporte", disabled: true },
+    { label: "Configurações", icon: <FiSettings size={20} />, path: "/configuracoes", disabled: true },
+  ];
 
   return (
     <div className="home-container">
@@ -66,7 +58,6 @@ export default function Layout({ children }) {
           <img src={logo} alt="Logo" />
         </div>
 
-        {/*Tempo de Inatividade*/}
         <div className={`inactivity-timer ${countdownSeconds <= 300 ? 'warning' : ''}`}>
           <p>Sessão expira em: <strong>{formattedCountdown}</strong></p>
         </div>
@@ -74,103 +65,38 @@ export default function Layout({ children }) {
         <div className="sidebar-menu-section">
           <p className="sidebar-main-menu">MENU</p>
 
-          {/*Botão sempre visivel*/}
-          <button
-            className={`menu-btn ${isActive(["/home", "/"]) ? "active" : ""}`}
-            onClick={() => navigate("/home")}
-          >
-            <IoHomeOutline size={20} />
-            Início
-          </button>
-
-          {/*Botões(Grupo 1 e Grupo 2*/}
-          {showCoordenacao && (
-            <>
+          {/* Renderiza apenas quando userGroup estiver definido */}
+          {!isLoadingRole && userGroup != null && menuButtons.map((btn, idx) => {
+            if (!btn.groups.includes(userGroup)) return null; // não aparece se não é do grupo
+            return (
               <button
-                className={`menu-btn ${isActive(["/buscar-aluno", "/aluno-perfil"]) ? "active" : ""}`}
-                onClick={() => navigate("/buscar-aluno")}
+                key={idx}
+                className={`menu-btn ${isActive([btn.path]) ? "active" : ""}`}
+                onClick={() => !btn.disabled && navigate(btn.path)}
+                disabled={btn.disabled}
               >
-                <LuUserSearch size={20} />
-                Alunos
+                {btn.icon} {btn.label}
               </button>
-
-              <button
-                className={`menu-btn ${isActive(["/cadastrar-aluno"]) ? "active" : ""}`}
-                onClick={() => navigate("/cadastrar-aluno")}
-              >
-                <FiFolderPlus size={20} />
-                Cadastro
-              </button>
-
-              <button
-                className={`menu-btn ${isActive(["/relatorios"]) ? "active" : ""}`}
-                onClick={() => navigate("/relatorios")}
-                disabled
-              >
-                <BiBarChart size={20} />
-                Relatórios
-              </button>
-
-              <button
-                className={`menu-btn ${isActive(["/coordenacao/turmas"]) ? "active" : ""}`}
-                onClick={() => navigate("/coordenacao/turmas")}
-              >
-                <PiGraduationCap size={20} />
-                Turmas
-              </button>
-
-            </>
-          )}
-
-          {/*Botão de Matrícula(Grupo 2)*/}
-          {showMatriculas && (
-            <button
-              className={`menu-btn ${isActive(["/coordenacao/matriculas"]) ? "active" : ""}`}
-              onClick={() => navigate("/coordenacao/matriculas")}
-            >
-              <LiaClipboardListSolid size={20} />
-              Matrículas
-            </button>
-          )}
-
-          {/*Botão de Notas(Grupo 0)*/}
-          {showNotas && (
-            <button
-              className={`menu-btn ${isActive(["/Notas"]) ? "active" : ""}`}
-              onClick={() => navigate("/Notas")}
-            >
-              <HiOutlinePencilSquare size={20} />
-              Notas
-            </button>
-          )}
-
+            );
+          })}
         </div>
 
         <div className="sidebar-bottom">
           <p className="sidebar-other">OUTROS</p>
 
-          {/*Botões sempre visiveis*/}
-          <button
-            className={`menu-btn ${isActive(["/suporte"]) ? "active" : ""}`}
-            onClick={() => navigate("/suporte")}
-            disabled
-          >
-            <FiHelpCircle size={20} />
-            Suporte
-          </button>
-
-          <button
-            className={`menu-btn ${isActive(["/configuracoes"]) ? "active" : ""}`}
-            onClick={() => navigate("/configuracoes")}
-            disabled
-          >
-            <FiSettings size={20} />
-            Configurações
-          </button>
+          {otherButtons.map((btn, idx) => (
+            <button
+              key={idx}
+              className={`menu-btn ${isActive([btn.path]) ? "active" : ""}`}
+              onClick={() => !btn.disabled && navigate(btn.path)}
+              disabled={btn.disabled}
+            >
+              {btn.icon} {btn.label}
+            </button>
+          ))}
 
           <button className="menu-btn-sair" onClick={handleLogout}>
-            <FiLogOut size={20} />
-            Sair
+            <FiLogOut size={20} /> Sair
           </button>
         </div>
       </aside>
@@ -188,7 +114,9 @@ export default function Layout({ children }) {
           </div>
         </div>
 
-        <div>{children}</div>
+        <div className="page-content">
+          {isLoadingRole ? <Loading text="Carregando..." /> : children}
+        </div>
       </main>
     </div>
   );

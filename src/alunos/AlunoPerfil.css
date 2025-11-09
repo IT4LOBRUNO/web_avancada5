@@ -1,4 +1,3 @@
-/* Cabeçalho da página de perfil */
 .aluno-perfil-header {
     display: flex;
     align-items: center;
@@ -12,14 +11,13 @@
     color: #495057;
 }
 
-/* Linha divisória */
+/*Linha divisória*/
 hr {
     border: none;
     border-top: 1px solid #dee2e6;
     margin: 15px 0;
 }
 
-/*Seções*/
 .perfil-section {
     background: #fff;
     padding: 20px 25px;
@@ -38,7 +36,6 @@ hr {
     padding-bottom: 5px;
 }
 
-/*Grid interno*/
 .perfil-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(auto, 260px));
@@ -46,7 +43,6 @@ hr {
     justify-items: start;
 }
 
-/* Textos */
 .perfil-grid p {
     margin: 0;
     padding: 3px 0;
@@ -60,10 +56,100 @@ hr {
     font-weight: 600;
 }
 
-/* Espaçamento para botões na seção final */
 .perfil-section .perfil-actions {
     display: flex;
     justify-content: center;
     margin-top: 25px;
     gap: 20px;
+}
+
+.aluno-cabecalho {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.aluno-cabecalho button {
+  margin-right: 15px;
+}
+
+/*Foto de perfil*/
+.foto-perfil-container {
+  margin-bottom: 20px;
+}
+
+.foto-perfil-inner {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.foto-perfil-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
+.foto-perfil-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #1b98f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 60px; /*Fonte da Primeira letra do nome no Avatar*/
+  font-weight: bold;
+}
+
+/*Seções do perfil*/
+.perfil-section {
+  margin-bottom: 20px;
+}
+
+.perfil-section h2 {
+  margin-bottom: 15px;
+}
+
+/*Dados do perfil*/
+.perfil-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+/*Documentos anexados*/
+.documentos-info {
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  color: #6c757d;
+}
+
+.documentos-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/*Mensagem de erro*/
+.erro-mensagem {
+  color: red;
+}
+
+.custom-file-button {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #1b98f5;
+  color: #fff;
+  font-size: 0.9em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.custom-file-button:hover {
+  background-color: #1a5d8c;
 }

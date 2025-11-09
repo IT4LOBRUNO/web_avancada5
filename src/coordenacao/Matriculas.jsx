@@ -43,15 +43,32 @@ export default function Matriculas() {
   };
 
   const applyFilters = () => {
-    const result = filterAndSortAlunos(alunos, busca, filters, calcularIdade);
-    setResultado(result);
+    const filtered = filterAndSortAlunos(alunos, busca, filters, calcularIdade)
+      .filter(aluno => {
+        const statusNormalized = (aluno.status || "")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase();
+        return statusNormalized !== "matriculado"; // remove matriculados
+      });
+    setResultado(filtered);
   };
+
 
   useEffect(() => {
     const carregarAlunos = async () => {
       try {
         const snapshot = await getDocs(collection(db, "alunos"));
-        const lista = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const lista = snapshot.docs
+          .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .filter(aluno => {
+            const statusNormalized = (aluno.status || "")
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLowerCase();
+            return statusNormalized !== "matriculado";
+          });
+
         setAlunos(lista);
       } catch (error) {
         console.error("Erro ao carregar alunos para Matrículas:", error);
@@ -61,6 +78,8 @@ export default function Matriculas() {
     };
     carregarAlunos();
   }, []);
+
+
 
   //Dispara a filtragem sempre que houver alguma mudança
   useEffect(() => {
