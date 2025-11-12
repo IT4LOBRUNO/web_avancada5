@@ -8,6 +8,8 @@ import Button from "../components/Button";
 import { downloadBase64File } from "../components/DownloadHelper";
 import "../components/Components.css";
 
+//Descontinuado depois de conversar com o professor
+
 export default function ResponsaveisBusca() {
   const [busca, setBusca] = useState("");
   const [resultados, setResultados] = useState([]);
@@ -36,7 +38,7 @@ export default function ResponsaveisBusca() {
         ...snapshotCpf.docs.map((doc) => ({ id: doc.id, ...doc.data() })),
       ];
 
-      // remove duplicados
+      //remove duplicados
       const unicos = Array.from(new Map(lista.map((r) => [r.id, r])).values());
       setResultados(unicos);
     } catch (error) {

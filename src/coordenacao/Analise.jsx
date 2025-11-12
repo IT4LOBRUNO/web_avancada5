@@ -4,7 +4,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import Layout from "../components/Layout.jsx";
 import Button from "../components/Button.jsx";
-import { FiArrowLeft } from 'react-icons/fi';
+import { FiArrowLeft } from "react-icons/fi";
 import "../alunos/alunoPerfil.css";
 
 const formatarData = (dataStr) => {
@@ -22,7 +22,7 @@ export default function Analise() {
   const navigate = useNavigate();
   const [aluno, setAluno] = useState(null);
   const [carregando, setCarregando] = useState(true);
-  const [processando, setProcessando] = useState(false); // evita duplo clique
+  const [processando, setProcessando] = useState(false);
 
   useEffect(() => {
     const fetchAluno = async () => {
@@ -44,7 +44,7 @@ export default function Analise() {
     try {
       await updateDoc(doc(db, "alunos", id), { status: novoStatus });
       alert(`Status atualizado para: ${novoStatus}`);
-      navigate("/coordenacao/matriculas"); // rota correta
+      navigate("/coordenacao/matriculas");
     } catch (erro) {
       console.log("Erro ao atualizar status:", erro);
     } finally {
@@ -59,16 +59,15 @@ export default function Analise() {
 
   return (
     <Layout>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-        <Button onClick={() => navigate('/coordenacao/matriculas')} style={{ marginRight: '15px' }}>
+      <div className="perfil-header">
+        <Button onClick={() => navigate("/coordenacao/matriculas")} className="btn-voltar">
           <FiArrowLeft /> Voltar
         </Button>
-        <h1>Análise de {alunoData?.nome}</h1>
+        <h1 className="perfil-titulo">Análise de {alunoData?.nome}</h1>
       </div>
 
-      <hr />
+      <hr className="perfil-divisor" />
 
-      {/* Dados do aluno */}
       <div className="perfil-section">
         <h2>Dados Pessoais</h2>
         <div className="perfil-grid">
@@ -79,7 +78,6 @@ export default function Analise() {
         </div>
       </div>
 
-      {/* Documentos */}
       <div className="perfil-section">
         <h2>Documentos e Filiação</h2>
         <div className="perfil-grid">
@@ -90,7 +88,6 @@ export default function Analise() {
         </div>
       </div>
 
-      {/* Responsável */}
       <div className="perfil-section">
         <h2>Responsável</h2>
         <div className="perfil-grid">
@@ -100,7 +97,6 @@ export default function Analise() {
         </div>
       </div>
 
-      {/* Bens */}
       <div className="perfil-section">
         <h2>Bens</h2>
         <div className="perfil-grid">
@@ -112,7 +108,6 @@ export default function Analise() {
         </div>
       </div>
 
-      {/* Habitação */}
       <div className="perfil-section">
         <h2>Habitação</h2>
         <div className="perfil-grid">
@@ -124,10 +119,9 @@ export default function Analise() {
         </div>
       </div>
 
-      {/* Botões de decisão */}
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40, gap: 20 }}>
+      <div className="perfil-acoes">
         <Button
-          style={{ background: "#28a745" }}
+          className="btn-aprovar"
           onClick={() => atualizarStatus("Aprovado")}
           disabled={processando}
         >
@@ -135,7 +129,7 @@ export default function Analise() {
         </Button>
 
         <Button
-          style={{ background: "#dc3545" }}
+          className="btn-rejeitar"
           onClick={() => atualizarStatus("Cancelado")}
           disabled={processando}
         >

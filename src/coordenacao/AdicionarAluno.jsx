@@ -28,7 +28,7 @@ export default function AdicionarAluno() {
                             .replace(/[\u0300-\u036f]/g, "")
                             .toLowerCase();
 
-                        return s === "aprovado" || s === "rematricula";
+                        return s === "aprovado";
                     });
 
 

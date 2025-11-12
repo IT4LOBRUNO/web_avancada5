@@ -1,0 +1,137 @@
+.calendar-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.calendar-box {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  width: 100%;
+  max-width: 900px;
+}
+
+/* ===== Modal ===== */
+.calendar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.calendar-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px 24px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  animation: modalAppear 0.25s ease;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.calendar-modal h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #1b98f5;
+  text-align: center;
+}
+
+.calendar-modal input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 15px;
+  border: 1px solid #d3d3d3;
+  border-radius: 8px;
+  outline: none;
+  margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+
+.calendar-modal input:focus {
+  border-color: #1b98f5;
+}
+
+.calendar-modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.calendar-modal-buttons button {
+  flex: 1;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.save-btn {
+  background-color: #1b98f5;
+  color: #fff;
+}
+
+.save-btn:hover {
+  background-color: #1488e5;
+}
+
+.cancel-btn {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background-color: #d0d0d0;
+}
+
+/*Calendário*/
+.fc .fc-toolbar-title {
+  color: #1b98f5;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.fc-button {
+  background-color: #1b98f5 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 6px 12px !important;
+}
+
+.fc-button:hover {
+  background-color: #1488e5 !important;
+}
+
+.fc-daygrid-day-number {
+  color: #333;
+  font-weight: 500;
+}
+
+.fc-event {
+  background-color: #1b98f5 !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 6px;
+  padding: 2px 4px;
+  font-size: 13px;
+}

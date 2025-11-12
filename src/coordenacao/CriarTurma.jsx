@@ -1,35 +1,54 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout.jsx";
+import Button from "../components/Button.jsx";
+import InputField from "../components/InputField.jsx";
+import SelectField from "../components/SelectField.jsx";
+import FormSection from "../components/FormSection.jsx";
+import FormHeader from "../components/FormHeader.jsx";
+import ValidationMessage from "../components/ValidationMessage.jsx";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button.jsx";
-import "./Coordenacao.css";
 
 export default function CriarTurma() {
-  const [nome, setNome] = useState("");
-  const [turno, setTurno] = useState("");
+  const [turmaData, setTurmaData] = useState({
+    nome: "",
+    turno: "",
+  });
+
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const validate = () => {
+    let newErrors = {};
+
+    if (!turmaData.nome.trim()) newErrors.nome = "O nome da turma é obrigatório.";
+    if (!turmaData.turno) newErrors.turno = "O turno é obrigatório.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChange = (field, value) => {
+    setTurmaData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) setErrors(prev => ({ ...prev, [field]: null }));
+  };
+
   const handleSalvar = async () => {
-    if (!nome.trim() || !turno.trim()) {
-      alert("Por favor, preencha todos os campos.");
-      return;
-    }
+    if (!validate()) return;
 
     setLoading(true);
     try {
-      const docRef = await addDoc(collection(db, "turmas"), {
-        nome,
-        turno,
+      await addDoc(collection(db, "turmas"), {
+        nome: turmaData.nome,
+        turno: turmaData.turno,
         membros: [],
         totalMembros: 0,
       });
 
-      // Navega para a tela de adicionar aluno já com o turmaId
-      navigate(`/coordenacao/adicionar-aluno?turmaId=${docRef.id}`);
-
+      // ✅ Redireciona de volta para a lista de turmas após criar
+      navigate("/coordenacao/turmas");
     } catch (error) {
       console.error("Erro ao criar turma:", error);
       alert("Erro ao criar turma, tente novamente.");
@@ -38,46 +57,41 @@ export default function CriarTurma() {
     }
   };
 
-
   return (
     <Layout>
-      <div className="alunos-page-container">
+      <FormSection>
+        <FormHeader title="Criar Nova Turma" />
 
-        {/* Header da página */}
-        <div className="page-header page-header-turmas">
-          <h1>Criar Nova Turma</h1>
-        </div>
+        <InputField
+          label="Nome da Turma *"
+          value={turmaData.nome}
+          onChange={(v) => handleChange("nome", v)}
+          placeholder="Ex: 1º Ano A"
+          required
+        />
+        <ValidationMessage message={errors.nome} />
 
-        <div className="form-container">
+        <SelectField
+          label="Turno *"
+          value={turmaData.turno}
+          onChange={(v) => handleChange("turno", v)}
+          options={[
+            { value: "", label: "Selecione..." },
+            { value: "Manhã", label: "Manhã" },
+            { value: "Tarde", label: "Tarde" },
+          ]}
+        />
+        <ValidationMessage message={errors.turno} />
 
-          <label className="form-label">Nome da Turma</label>
-          <input
-            type="text"
-            className="form-input"
-            placeholder="Ex: 1º Ano A"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
-
-          <label className="form-label" style={{ marginTop: "15px" }}>
-            Turno
-          </label>
-          <select
-            className="form-input"
-            value={turno}
-            onChange={(e) => setTurno(e.target.value)}
-          >
-            <option value="">Selecione...</option>
-            <option value="Manhã">Manhã</option>
-            <option value="Tarde">Tarde</option>
-          </select>
-
-          <Button variant="verde" onClick={handleSalvar} disabled={loading} style={{ marginTop: "25px" }}>
-            {loading ? "Salvando..." : "Confirmar"}
-          </Button>
-
-        </div>
-      </div>
+        <Button
+          variant="azul"
+          onClick={handleSalvar}
+          disabled={loading}
+          style={{ marginTop: 20 }}
+        >
+          {loading ? "Salvando..." : "Confirmar"}
+        </Button>
+      </FormSection>
     </Layout>
   );
 }

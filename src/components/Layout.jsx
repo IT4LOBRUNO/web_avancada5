@@ -17,6 +17,11 @@ import { LiaClipboardListSolid } from "react-icons/lia";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { BiBarChart } from "react-icons/bi";
 import { PiGraduationCap } from "react-icons/pi";
+import { BsMegaphone } from "react-icons/bs";
+import { IoCalendarOutline } from "react-icons/io5";
+import { LuCalendarSearch } from "react-icons/lu";
+
+
 
 export default function Layout({ children }) {
   const navigate = useNavigate();
@@ -35,7 +40,7 @@ export default function Layout({ children }) {
 
   const displayUserName = isLoadingRole ? "Carregando..." : userName;
 
-  // Botões principais do menu
+  //Botões principais do menu
   const menuButtons = [
     { label: "Início", icon: <IoHomeOutline size={20} />, path: "/home", groups: [0, 1, 2] },
     { label: "Alunos", icon: <LuUserSearch size={20} />, path: "/buscar-aluno", groups: [1, 2] },
@@ -43,7 +48,11 @@ export default function Layout({ children }) {
     { label: "Relatórios", icon: <BiBarChart size={20} />, path: "/relatorios", groups: [1, 2], disabled: true },
     { label: "Turmas", icon: <PiGraduationCap size={20} />, path: "/coordenacao/turmas", groups: [1, 2] },
     { label: "Matrículas", icon: <LiaClipboardListSolid size={20} />, path: "/coordenacao/matriculas", groups: [2] },
+    { label: "Avisos", icon: <BsMegaphone size={20} />, path: "/coordenacao/avisos", groups: [2] },
     { label: "Notas", icon: <HiOutlinePencilSquare size={20} />, path: "/Notas", groups: [0] },
+    { label: "Calendário", icon: <IoCalendarOutline size={20} />, path: "/coordenacao/calendario", groups: [1, 2] },
+    { label: "Datas", icon: <LuCalendarSearch size={20} />, path: "/responsaveis/Data", groups: [0] },
+
   ];
 
   const otherButtons = [
@@ -65,9 +74,9 @@ export default function Layout({ children }) {
         <div className="sidebar-menu-section">
           <p className="sidebar-main-menu">MENU</p>
 
-          {/* Renderiza apenas quando userGroup estiver definido */}
+          {/*Renderiza apenas quando userGroup estiver definido*/}
           {!isLoadingRole && userGroup != null && menuButtons.map((btn, idx) => {
-            if (!btn.groups.includes(userGroup)) return null; // não aparece se não é do grupo
+            if (!btn.groups.includes(userGroup)) return null;
             return (
               <button
                 key={idx}

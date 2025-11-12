@@ -2,19 +2,21 @@ import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout.jsx";
 import { collection, doc, getDoc, getDocs, updateDoc, arrayRemove, increment } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig.js";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading.jsx";
 import "../coordenacao/coordenacao.css";
 import Button from "../components/Button.jsx";
+import Modal from "../components/Modal.jsx";
 
 export default function EditarTurma() {
     const { turmaId } = useParams();
+    const navigate = useNavigate();
+
     const [alunos, setAlunos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [nomeTurma, setNomeTurma] = useState("");
     const [confirmModal, setConfirmModal] = useState(false);
     const [alunoSelecionado, setAlunoSelecionado] = useState(null);
-
 
     useEffect(() => {
         const carregarDados = async () => {
@@ -30,9 +32,7 @@ export default function EditarTurma() {
                     return;
                 }
 
-                // ✅ Preenche nome da turma no input
                 setNomeTurma(turmaSnap.data().nome || "");
-
                 const membros = turmaSnap.data().membros || [];
 
                 if (membros.length === 0) {
@@ -63,12 +63,12 @@ export default function EditarTurma() {
                 nome: nomeTurma.trim(),
             });
             alert("Nome da turma salvo com sucesso!");
+            navigate("/turmas");
         } catch (error) {
             console.error("Erro ao salvar o nome da turma:", error);
             alert("Ocorreu um erro ao salvar o nome da turma.");
         }
     };
-
 
     const removerAluno = async (alunoId) => {
         const turmaRef = doc(db, "turmas", turmaId);
@@ -76,11 +76,11 @@ export default function EditarTurma() {
 
         await updateDoc(turmaRef, {
             membros: arrayRemove(alunoId),
-            totalMembros: increment(-1)
+            totalMembros: increment(-1),
         });
 
         await updateDoc(alunoRef, {
-            status: "Rematricula"
+            status: "Rematricula",
         });
 
         setAlunos((prev) => prev.filter((a) => a.id !== alunoId));
@@ -97,8 +97,6 @@ export default function EditarTurma() {
     return (
         <Layout>
             <div className="alunos-page-container">
-
-                {/* ✅ Título + Campo para editar o nome */}
                 <div className="page-header">
                     <div className="page-title-group">
                         <h1>Editar Turma</h1>
@@ -111,13 +109,10 @@ export default function EditarTurma() {
                             placeholder="Nome da Turma"
                             style={{ maxWidth: "350px" }}
                         />
-                        <Button onClick={salvarNomeTurma}>
-                            Salvar Nome
-                        </Button>
+                        <Button onClick={salvarNomeTurma}>Salvar Nome</Button>
                     </div>
                 </div>
 
-                {/* ✅ Tabela de alunos */}
                 {alunos.length === 0 ? (
                     <p className="busca-error">Nenhum aluno matriculado nesta turma.</p>
                 ) : (
@@ -137,13 +132,14 @@ export default function EditarTurma() {
                                     <td>{aluno.documentos?.responsavelNome || "—"}</td>
                                     <td>{aluno.status || "—"}</td>
                                     <td>
-                                        <Button onClick={() => {
-                                            setAlunoSelecionado(aluno);
-                                            setConfirmModal(true);
-                                        }}>
+                                        <Button
+                                            onClick={() => {
+                                                setAlunoSelecionado(aluno);
+                                                setConfirmModal(true);
+                                            }}
+                                        >
                                             Remover da Turma
                                         </Button>
-
                                     </td>
                                 </tr>
                             ))}
@@ -151,35 +147,20 @@ export default function EditarTurma() {
                     </table>
                 )}
             </div>
-            {confirmModal && (
-                <div className="modal-overlay" onClick={() => setConfirmModal(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
 
-                        <h3 style={{ marginBottom: "10px" }}>Remover aluno da turma?</h3>
-                        <p style={{ marginBottom: "18px", color: "#444", textAlign: "center" }}>
-                            Tem certeza que deseja remover <strong>{alunoSelecionado?.alunoData?.nome}</strong> desta turma?
-                        </p>
-
-                        <div className="modal-buttons">
-                            <button className="cancelar" onClick={() => setConfirmModal(false)}>
-                                Cancelar
-                            </button>
-
-                            <button
-                                className="remover"
-                                onClick={() => {
-                                    removerAluno(alunoSelecionado.id);
-                                    setConfirmModal(false);
-                                }}
-                            >
-                                Remover
-                            </button>
-                        </div>
-
-                    </div>
-                </div>
+            {confirmModal && alunoSelecionado && (
+                <Modal
+                    title="Remover aluno da turma?"
+                    message={`Tem certeza que deseja remover <strong>${alunoSelecionado?.alunoData?.nome}</strong> desta turma?`}
+                    onConfirm={() => {
+                        removerAluno(alunoSelecionado.id);
+                        setConfirmModal(false);
+                    }}
+                    onCancel={() => setConfirmModal(false)}
+                    confirmText="Remover"
+                    cancelText="Cancelar"
+                />
             )}
-
         </Layout>
     );
 }

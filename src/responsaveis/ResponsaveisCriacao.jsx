@@ -7,11 +7,13 @@ import Button from "../components/Button.jsx";
 import FileUploader from "../components/FileUploader.jsx";
 import "../components/Components.css";
 
+//Descontinuado depois de conversar com o professor
+
 export default function ResponsaveisCriacao() {
   const [form, setForm] = useState({
     nome: "",
     cpf: "",
-    email: "",        // novo campo email
+    email: "",
     telefone: "",
     endereco: "",
     comprovante: null,
@@ -39,7 +41,7 @@ export default function ResponsaveisCriacao() {
       await addDoc(collection(db, "responsaveis"), {
         nome,
         cpf,
-        email,           // salva email
+        email,
         telefone,
         endereco,
         comprovante: base64Comprovante,
@@ -51,7 +53,7 @@ export default function ResponsaveisCriacao() {
       setForm({
         nome: "",
         cpf: "",
-        email: "",      // reseta email
+        email: "",
         telefone: "",
         endereco: "",
         comprovante: null,
@@ -68,7 +70,7 @@ export default function ResponsaveisCriacao() {
 
       <InputField label="Nome" value={form.nome} onChange={(v) => setForm({ ...form, nome: v })} />
       <InputField label="CPF" value={form.cpf} onChange={(v) => setForm({ ...form, cpf: v })} />
-      <InputField label="Email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} /> {/* novo input */}
+      <InputField label="Email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
       <InputField label="Telefone" value={form.telefone} onChange={(v) => setForm({ ...form, telefone: v })} />
       <InputField label="Endereço" value={form.endereco} onChange={(v) => setForm({ ...form, endereco: v })} />
 
