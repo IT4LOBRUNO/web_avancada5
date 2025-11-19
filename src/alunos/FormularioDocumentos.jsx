@@ -10,7 +10,7 @@ import ValidationMessage from "../components/ValidationMessage.jsx";
 import { auth } from "../firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 
-// Função utilitária para limpar não-dígitos, útil para RG/CPF
+//Função utilitária da internet, útil para RG/CPF
 const cleanNumeric = (value) => value.replace(/\D/g, '');
 
 export default function FormularioDocumentos() {
@@ -18,7 +18,7 @@ export default function FormularioDocumentos() {
   const navigate = useNavigate();
   const { alunoData } = location.state || {};
 
-  // Protege a página
+  //Protege a págine removendo usuários não logados
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -29,7 +29,7 @@ export default function FormularioDocumentos() {
   }, [navigate]);
 
   const [documentos, setDocumentos] = useState({
-    // Dados do Aluno
+    //Dados do Aluno
     rg: "",
     cpf: "",
     sus: "",
@@ -37,7 +37,7 @@ export default function FormularioDocumentos() {
     nomePai: "",
     nomeMae: "",
 
-    // NOVOS DADOS DO RESPONSÁVEL
+    //Dados do responsável
     responsavelNome: "",
     responsavelRg: "",
     responsavelCpf: "",
@@ -48,7 +48,6 @@ export default function FormularioDocumentos() {
   const [errors, setErrors] = useState({});
 
   const handleChange = (field, value) => {
-    // Aplica limpeza para campos numéricos/de identificação
     if (['rg', 'cpf', 'sus', 'responsavelRg', 'responsavelCpf', 'responsavelContato'].includes(field)) {
       value = cleanNumeric(value);
     }
@@ -60,7 +59,7 @@ export default function FormularioDocumentos() {
   const validate = () => {
     let newErrors = {};
 
-    // 1. Validação do Aluno
+    //Validação do Aluno
     if (!documentos.rg.trim()) {
       newErrors.rg = "O RG do aluno é obrigatório.";
     } else if (documentos.rg.length < 5) {
@@ -71,7 +70,7 @@ export default function FormularioDocumentos() {
       newErrors.corRaca = "A cor/raça é obrigatória.";
     }
 
-    // 2. Validação do Responsável (NOVAS VALIDAÇÕES OBRIGATÓRIAS)
+    //Validação do Responsável
     if (!documentos.responsavelNome.trim()) {
       newErrors.responsavelNome = "O nome do responsável é obrigatório.";
     }
@@ -84,7 +83,7 @@ export default function FormularioDocumentos() {
 
     if (!documentos.responsavelContato.trim()) {
       newErrors.responsavelContato = "O número de contato do responsável é obrigatório.";
-    } else if (documentos.responsavelContato.length < 8) { // Ex: 8 para telefone fixo mínimo
+    } else if (documentos.responsavelContato.length < 8) {
       newErrors.responsavelContato = "O contato do responsável é inválido.";
     }
 

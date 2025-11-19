@@ -2,6 +2,8 @@ import React from "react";
 import Button from "./Button.jsx";
 import "./Components.css";
 
+//Renderiza as tabelas de busca
+
 export default function SearchTable({
   headers = [],
   rows = [],
@@ -44,10 +46,10 @@ export default function SearchTable({
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row.id}>    
+            <tr key={row.id}>
               {dataKeys.map(key => (
                 <td key={key} style={{ verticalAlign: 'middle' }}>{row[key]}</td>
-              ))}  
+              ))}
               {onActionClick && (
                 <td style={{ verticalAlign: 'middle' }}>
                   <Button onClick={() => onActionClick(row.id)}>

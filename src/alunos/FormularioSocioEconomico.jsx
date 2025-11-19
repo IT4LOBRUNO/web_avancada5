@@ -15,7 +15,7 @@ export default function FormularioSocioEconomico() {
   const navigate = useNavigate();
   const { alunoData, documentos } = location.state || {};
 
-  // Protege a página: Redireciona se não estiver logado
+  //Protege a págine removendo usuários não logados
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -43,15 +43,13 @@ export default function FormularioSocioEconomico() {
   const handleChange = (field, value) => {
     let newValue = value;
 
-    // Garante que os campos de contagem sejam números inteiros não negativos
     if (['televisao', 'geladeira', 'computador', 'carro', 'moto'].includes(field)) {
       const num = parseInt(value, 10);
-      newValue = (isNaN(num) || num < 0) ? 0 : num;
+      newValue = (isNaN(num) || num < 0) ? 0 : num; //Os itens não podem ser menores que zero
     }
 
-    // Para valorAluguel (opcionalmente pode ser float)
     if (field === 'valorAluguel' && value === '') {
-      newValue = ''; // Permite string vazia para o campo opcional
+      newValue = ''; //Permite string vazia
     }
 
     setSocioEconomico(prev => ({ ...prev, [field]: newValue }));
@@ -73,7 +71,7 @@ export default function FormularioSocioEconomico() {
   const handleNext = () => {
     if (!validate()) return;
 
-    // Separa os dados em dois objetos menores para organização no Firestore
+    //Separa os dados para organização no Firestore
     const {
       situacao,
       valorAluguel,

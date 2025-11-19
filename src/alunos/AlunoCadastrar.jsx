@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; // ← useEffect importado
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout.jsx";
 import InputField from "../components/InputField.jsx";
@@ -9,13 +9,15 @@ import FormHeader from "../components/FormHeader.jsx";
 import ValidationMessage from "../components/ValidationMessage.jsx";
 import validateBirthDate from "../components/ValidateData.jsx";
 
+//Tela inicial de cadastro (Para informações básicas, serve somente para iniciar o processo)
+
 import { auth } from "../firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 
 export default function AlunoCadastrar() {
   const navigate = useNavigate();
 
-  // Verifica se o usuário está logado
+  //Verifica se o usuário está logado
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {

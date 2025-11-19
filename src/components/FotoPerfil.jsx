@@ -2,7 +2,6 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
 /**
-* Salva a foto de perfil de um aluno no Firestore.
 * @param {string} alunoId
 * @param {File} file
 * @returns {Promise<string>}

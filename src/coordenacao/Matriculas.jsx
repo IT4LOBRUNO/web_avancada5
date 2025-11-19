@@ -49,7 +49,7 @@ export default function Matriculas() {
           .normalize("NFD")
           .replace(/[\u0300-\u036f]/g, "")
           .toLowerCase();
-        return statusNormalized !== "matriculado"; // remove matriculados
+        return statusNormalized !== "matriculado"; //remove matriculados
       });
     setResultado(filtered);
   };

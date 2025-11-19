@@ -1,6 +1,8 @@
 import React from "react";
 import "./Components.css";
 
+//Descontinuado para SearchTable
+
 export default function AlunoCard({ aluno, onEdit, onDelete }) {
   return (
     <div className="card">

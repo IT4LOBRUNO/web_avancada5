@@ -6,6 +6,8 @@ import { collection, addDoc, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig.js";
 import "./Calendar.css";
 
+//Dor de cabeça (detesto data, Só Gepeto na causa)
+
 export default function Calendar({ readOnly = false }) {
   const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -34,7 +36,7 @@ export default function Calendar({ readOnly = false }) {
     const clickedDate = new Date(info.dateStr);
 
     if (readOnly) return;
-    if (clickedDate < today.setHours(0, 0, 0, 0)) return;
+    if (clickedDate < today.setHours(0, 0, 0, 0)) return;//Pesadelo
 
     setSelectedDate(info.dateStr);
     setShowModal(true);

@@ -1,6 +1,8 @@
 import React from "react";
 import Layout from "../components/Layout";
 
+//Não faço a menor ideia de como terminar essa página
+
 export default function Notas() {
   return (
     <Layout>

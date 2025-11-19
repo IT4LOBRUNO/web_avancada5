@@ -216,7 +216,7 @@ export default function AlunoBuscar() {
 
           <div className="busca-input-group" style={{ flexGrow: 1, display: "flex", gap: "10px" }}>
 
-            {/* Input de Idade Exata (2) */}
+            {/*Idade Exata*/}
             <input
               type="number"
               placeholder="Idade"

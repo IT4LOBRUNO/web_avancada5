@@ -47,7 +47,6 @@ export default function CriarTurma() {
         totalMembros: 0,
       });
 
-      // ✅ Redireciona de volta para a lista de turmas após criar
       navigate("/coordenacao/turmas");
     } catch (error) {
       console.error("Erro ao criar turma:", error);

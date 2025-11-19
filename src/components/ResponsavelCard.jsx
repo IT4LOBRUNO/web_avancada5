@@ -1,6 +1,8 @@
 import React from "react";
 import "./Components.css";
 
+//Descontinuado (Professor sugeriu a remoção do responsável no cadastro do aluno)
+
 export default function ResponsavelCard({ responsavel, onDownloadComprovante, onDownloadRgCnh, onCadastrar }) {
   return (
     <div className="card">
