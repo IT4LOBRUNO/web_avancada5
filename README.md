@@ -36,14 +36,13 @@ Este repositório contém a página de gestão utilizada por uma creche escola. 
 
 ### Frontend
 - React: https://react.dev  
-- JavaScript: https://developer.mozilla.org/en-US/docs/Web/JavaScript  
-- HTML5: https://developer.mozilla.org/en-US/docs/Web/HTML  
-- CSS3: https://developer.mozilla.org/en-US/docs/Web/CSS  
+- JavaScript: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript
+- HTML5: https://developer.mozilla.org/pt-BR/docs/Web/HTML  
+- CSS3: https://developer.mozilla.org/pt-BR/docs/Web/CSS 
 
 ### Backend
 - Firebase Authentication: https://firebase.google.com/docs/auth  
 - Firestore Database: https://firebase.google.com/docs/firestore  
-- Firebase Storage: https://firebase.google.com/docs/storage  
 
 ---
 
@@ -51,16 +50,10 @@ Este repositório contém a página de gestão utilizada por uma creche escola. 
 
 - Utilização de Hooks como `useState` e `useEffect`  
 - Navegação com React Router  
-- Integração completa com Firebase Authentication, Firestore e Storage  
+- Integração completa com Firebase Authentication e Firestore
 - Controle de acesso baseado em papéis (RBAC)  
 - Upload de arquivos e sincronização de dados em tempo real  
-- Arquitetura modular e escalável  
+- Arquitetura modular e escalável
+- Componentização
 
 ---
-
-## Instalação
-
-```bash
-git clone https://github.com/usuario/repositorio.git
-cd repositorio
-npm install
