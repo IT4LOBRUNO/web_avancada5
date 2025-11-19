@@ -1,69 +1,66 @@
-Sistema de Gestão Escolar
+# Sistema Web para Gestão Escolar
 
-Sistema web desenvolvido para modernizar processos de uma creche escola, reduzindo burocracia e melhorando a comunicação com as famílias.
+Este repositório contém a página de gestão utilizada por uma creche escola. O objetivo é substituir processos manuais por um sistema digital seguro, organizado e integrado.
 
-Problemas Resolvidos
+---
 
-Processos manuais e uso de papel
+## Objetivos
 
-Risco de perda de documentos
+- Reduzir tempo e custos operacionais  
+- Organizar, centralizar e proteger dados  
+- Facilitar a comunicação entre escola e responsáveis  
+- Atender diretrizes e exigências do MEC  
 
-Dificuldade para gerar relatórios
+---
 
-Comunicação limitada com pais
+## Perfis de Usuário
 
-Objetivos
+- **Administração:** gestão geral do sistema, análise de dados e geração de relatórios  
+- **Colaboradores:** matrículas, gestão de documentos, envio de comunicados  
+- **Responsáveis:** acompanhamento do histórico da criança em tempo real  
 
-Reduzir tempo e custos
+---
 
-Organizar e proteger dados
+## Funcionalidades
 
-Facilitar a comunicação
+- Cadastro e matrícula de alunos  
+- Filtros por idade, raça e status  
+- Atribuição de alunos a turmas  
+- Emissão de relatórios com exportação em **PDF** e **CSV**  
+- Calendário de eventos  
+- Acompanhamento em tempo real com integração ao backend  
 
-Atender diretrizes do MEC
+---
 
-Perfis de Usuário
+## Tecnologias
 
-Administração: gestão geral e geração de relatórios
-Colaboradores: matrículas, documentos e comunicados
-Responsáveis: acompanhamento do histórico da criança
+### Frontend
+- React: https://react.dev  
+- JavaScript: https://developer.mozilla.org/en-US/docs/Web/JavaScript  
+- HTML5: https://developer.mozilla.org/en-US/docs/Web/HTML  
+- CSS3: https://developer.mozilla.org/en-US/docs/Web/CSS  
 
-Funcionalidades
+### Backend
+- Firebase Authentication: https://firebase.google.com/docs/auth  
+- Firestore Database: https://firebase.google.com/docs/firestore  
+- Firebase Storage: https://firebase.google.com/docs/storage  
 
-Cadastro e matrícula de alunos
+---
 
-Filtros por idade, raça e status
+## Destaques Técnicos
 
-Atribuição de alunos a turmas
+- Utilização de Hooks como `useState` e `useEffect`  
+- Navegação com React Router  
+- Integração completa com Firebase Authentication, Firestore e Storage  
+- Controle de acesso baseado em papéis (RBAC)  
+- Upload de arquivos e sincronização de dados em tempo real  
+- Arquitetura modular e escalável  
 
-Relatórios com exportação PDF/CSV
+---
 
-Calendário de eventos
+## Instalação
 
-Acompanhamento em tempo real
-
-Tecnologias
-
-Frontend: React, JavaScript, HTML, CSS
-Backend: Firebase Authentication, Firestore, Storage
-Deploy: GitHub Pages
-IDE: Visual Studio Code
-
-Destaques Técnicos
-
-Uso de Hooks (useState, useEffect) e React Router
-
-Integração completa com Firebase
-
-Controle de acesso baseado em papéis (RBAC)
-
-Upload de arquivos e sincronização de dados em tempo real
-
-Deploy
-npm run build
-npm run deploy
-git push origin main
-
-Equipe
-
-Estudantes de Engenharia de Software e Sistemas de Informação responsáveis pelo desenvolvimento, modelagem, integração e design.
+```bash
+git clone https://github.com/usuario/repositorio.git
+cd repositorio
+npm install
